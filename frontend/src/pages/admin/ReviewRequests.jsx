@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Admin.css';
 import { Mail, Phone, Calendar, CheckCircle, XCircle, Clock, Send, FileText, Trash2 } from 'lucide-react';
 import Swal from 'sweetalert2';
-import api from '../../services/api';
+import { requestsService } from '../../admin/services';
 import AdminLoader from '../../components/admin/AdminLoader';
 
 const darkSwal = {
@@ -29,9 +29,10 @@ const ReviewRequests = () => {
   const fetchRequests = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/requests');
-      const data = res.data;
-      const sorted = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const list = await requestsService.getAll();
+      const sorted = (Array.isArray(list) ? list : []).sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
       setRequests(sorted);
     } catch (error) {
       console.error(error);
@@ -46,7 +47,7 @@ const ReviewRequests = () => {
       const updateData = { status: newStatus };
       if (replyMsg) updateData.reply = replyMsg;
 
-      await api.put(`/requests/${id}`, updateData);
+      await requestsService.update(id, updateData);
       
       setRequests(prev => prev.map(req => req.id === id ? { ...req, ...updateData } : req));
       
@@ -146,7 +147,7 @@ const ReviewRequests = () => {
 
   const deleteRequest = async (id) => {
     try {
-      await api.delete(`/requests/${id}`);
+      await requestsService.remove(id);
       setRequests(prev => prev.filter(req => req.id !== id));
       Swal.fire({
         ...darkSwal,

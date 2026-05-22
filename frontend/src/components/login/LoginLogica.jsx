@@ -76,8 +76,13 @@ export const useLoginLogic = () => {
         });
       }
     } catch (err) {
-      // Manejar error de credenciales o servidor
-      setError(err.response?.data?.error || 'Error al iniciar sesión. Verifica tus credenciales.');
+      if (!err.response) {
+        setError(
+          'No se pudo conectar con el servidor. Comprueba que el backend esté en marcha (npm run dev) y que MySQL esté activo.'
+        );
+      } else {
+        setError(err.response?.data?.error || 'Error al iniciar sesión. Verifica tus credenciales.');
+      }
     } finally {
       setLoading(false);
     }

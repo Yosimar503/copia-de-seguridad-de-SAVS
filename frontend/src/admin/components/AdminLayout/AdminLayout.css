@@ -1,0 +1,105 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #080808;
+  color: #fff;
+}
+
+.mobile-admin-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #0c0c0c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 1.5rem;
+  z-index: 200;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-logo-mobile {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.admin-logo-mobile span {
+  color: #eab308;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 150;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.admin-main-content {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.admin-page-container {
+  padding: 3rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Transición de entrada para cada página del admin */
+.admin-page-transition {
+  animation: pageFadeIn 0.35s ease forwards;
+}
+
+
+@media (max-width: 1024px) {
+  .admin-page-container {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-admin-header {
+    display: flex;
+  }
+  .admin-main-content {
+    padding-top: 60px;
+  }
+  .admin-page-container {
+    padding: 1.5rem;
+  }
+}
