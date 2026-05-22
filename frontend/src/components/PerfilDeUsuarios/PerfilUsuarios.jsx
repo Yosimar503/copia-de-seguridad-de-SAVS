@@ -4,6 +4,8 @@ import './PerfilUsuarios.css';
 import Swal from 'sweetalert2';
 import toast from 'react-hot-toast';
 import api, { vehicleService, authService } from '../../services/api';
+import PerfilPuntos from './PerfilPuntos';
+import PerfilSeguimiento from './PerfilSeguimiento';
 
 import {
   Bell,
@@ -124,18 +126,12 @@ function PerfilUsuarios() {
 
         // Buscamos todas las peticiones para filtrar manualmente por email (case-insensitive) y userId
         const [contactRes, tradeInRes] = await Promise.all([
-          api.get('/requests'),
-          api.get(`/sale_requests?userId=${user.id}`)
+          api.get('/requests/mine'),
+          api.get('/sale_requests/mine')
         ]);
 
-        const allContactRequests = contactRes.data;
-        const tradeInData = tradeInRes.data;
-
-        // Filtrar contactos por email ignorando mayúsculas/minúsculas
-        const userEmail = (user.email || '').toLowerCase();
-        const filteredContacts = allContactRequests.filter(req => 
-          (req.user_email || '').toLowerCase() === userEmail
-        );
+        const filteredContacts = contactRes.data || [];
+        const tradeInData = tradeInRes.data || [];
 
         // Normalizar trade-ins
         const normalizedTradeIn = tradeInData.map(item => ({
@@ -682,6 +678,14 @@ function PerfilUsuarios() {
               <Heart size={20} fill={activeTab === 'Favoritos' ? '#f5b400' : 'none'} color={activeTab === 'Favoritos' ? '#f5b400' : 'currentColor'} />
               <span>Favoritos</span>
             </li>
+            <li className={activeTab === 'Seguimiento' ? 'active' : ''} onClick={() => setActiveTab('Seguimiento')}>
+              <Clock size={20} />
+              <span>Seguimiento</span>
+            </li>
+            <li className={activeTab === 'Puntos' ? 'active' : ''} onClick={() => setActiveTab('Puntos')}>
+              <BadgeCheck size={20} />
+              <span>Puntos</span>
+            </li>
             <li className={activeTab === 'Peticiones' ? 'active' : ''} onClick={() => setActiveTab('Peticiones')}>
               <FileText size={20} />
               <span>Estado de Peticiones</span>
@@ -830,6 +834,14 @@ function PerfilUsuarios() {
                     )}
                   </div>
                 </section>
+              )}
+
+              {activeTab === 'Seguimiento' && (
+                <PerfilSeguimiento userInfo={userInfo} />
+              )}
+
+              {activeTab === 'Puntos' && (
+                <PerfilPuntos />
               )}
 
               {/* Nuevas Peticiones Tab */}

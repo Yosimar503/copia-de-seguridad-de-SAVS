@@ -5,12 +5,16 @@
   "main": "server.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test npx sequelize-cli db:migrate && cross-env NODE_ENV=test jest",
+    "test:verbose": "cross-env NODE_ENV=test npx sequelize-cli db:migrate && cross-env NODE_ENV=test jest --verbose",
+    "test:v1": "cross-env NODE_ENV=test jest __tests__/v1-modules.test.js __tests__/reportExport.test.js --verbose",
     "test:watch": "jest --watch",
     "start": "nodemon server.js",
     "db:init": "npx sequelize-cli db:migrate",
     "db:seed": "node seed.js",
+    "db:seed:pipeline": "npx sequelize-cli db:seed --seed 20260522140001-pipeline-stages.js",
     "db:fix-passwords": "node scripts/fix-passwords.js",
-    "db:migrate-json": "node migrate_json_to_mysql.js"
+    "db:migrate-json": "node migrate_json_to_mysql.js",
+    "db:migrate-tracking": "node scripts/migrate-tracking-data.js"
   },
   "jest": {
     "testEnvironment": "node",
@@ -28,6 +32,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "exceljs": "^4.4.0",
     "express": "^5.2.1",
     "express-rate-limit": "^8.5.1",
     "helmet": "^8.1.0",
@@ -35,6 +40,7 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
     "mysql2": "^3.22.3",
+    "pdfkit": "^0.18.0",
     "resend": "^6.12.3",
     "sequelize": "^6.37.8",
     "xss-clean": "^0.1.4"

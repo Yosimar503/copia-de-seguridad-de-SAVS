@@ -4,6 +4,7 @@
  */
 const { Usuario, Rol } = require('../models');
 const bcrypt = require('bcrypt');
+const { formatUser } = require('../utils/formatUser');
 
 /**
  * Obtiene todos los usuarios registrados en el sistema.
@@ -16,7 +17,7 @@ exports.getAll = async (req, res) => {
             attributes: { exclude: ['password'] },
             include: [{ model: Rol, as: 'rol' }] 
         });
-        res.json(data);
+        res.json(data.map(formatUser));
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -32,7 +33,7 @@ exports.getById = async (req, res) => {
             attributes: { exclude: ['password'] },
             include: [{ model: Rol, as: 'rol' }] 
         });
-        if (data) res.json(data);
+        if (data) res.json(formatUser(data));
         else res.status(404).json({ error: 'No encontrado' });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -75,7 +76,7 @@ exports.update = async (req, res) => {
             const data = await Usuario.findByPk(req.params.id, {
                 attributes: { exclude: ['password'] }
             });
-            res.json(data);
+            res.json(formatUser(data));
         } else {
             res.status(404).json({ error: 'No encontrado' });
         }

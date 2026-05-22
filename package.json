@@ -8,7 +8,10 @@
     "build": "npm run build --prefix frontend",
     "install:all": "npm install --prefix frontend && npm install --prefix backend",
     "db:setup": "npm run db:init --prefix backend && npm run db:seed --prefix backend",
-    "setup": "npm run install:all && npm run db:setup"
+    "setup": "npm run install:all && npm run db:setup",
+    "test": "npm test --prefix backend",
+    "test:verbose": "npm run test:verbose --prefix backend",
+    "test:v1": "npm run test:v1 --prefix backend"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"

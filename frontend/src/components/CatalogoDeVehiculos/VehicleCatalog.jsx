@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Heart, 
   Gauge, 
@@ -21,6 +21,8 @@ import SlideTextButton from '../SlideTextButton/SlideTextButton';
 import BorderBeam from '../BorderBeam/BorderBeam';
 import { Magnetic } from '../core/Magnetic';
 import FacebookPromo from '../FacebookPromo/FacebookPromo';
+import PromocionBadge from '../catalog/PromocionBadge';
+import { marketingService } from '../../services/api';
 import { motion } from 'framer-motion';
 import VehiclePDFButton from './VehiclePDFButton';
 import './VehicleCatalog.css';
@@ -79,6 +81,18 @@ const VehicleCatalog = ({ title, showFilters = false }) => {
     resetFilters
   } = useCatalogoLogica();
   const navigate = useNavigate();
+  const [promosActivas, setPromosActivas] = useState(false);
+
+  useEffect(() => {
+    marketingService.getBanners()
+      .then((banners) => setPromosActivas(Array.isArray(banners) && banners.length > 0))
+      .catch(() => setPromosActivas(false));
+  }, []);
+
+  const isVehiclePromo = (car) => {
+    const tag = (car.tag || '').toLowerCase();
+    return promosActivas && (tag.includes('oferta') || tag.includes('promo') || tag.includes('descuento'));
+  };
 
   return (
     <section className={`vehicle-catalog ${showFilters ? 'with-sidebar' : 'catalog-section'}`}>
@@ -203,6 +217,7 @@ const VehicleCatalog = ({ title, showFilters = false }) => {
                         <BorderBeam duration={10} size={25} borderWidth={1.2} />
                         <div className="vehicle-image-container">
                           <img src={imageSrc} alt={car.name} className="vehicle-image" />
+                          <PromocionBadge tag={car.tag} promoActiva={isVehiclePromo(car)} />
                           <div className="vehicle-tag" style={{ backgroundColor: car.tag === 'Vendido' ? '#ef4444' : '#10b981' }}>
                             {car.tag || 'Disponible'}
                           </div>

@@ -68,6 +68,7 @@ const NavbarDiseño = () => {
               Calcular Financiamiento
             </button>
           </li>
+          <li><NavLink to="/agendar-cita" className={({ isActive }) => isActive ? 'active' : ''}>Agendar cita</NavLink></li>
           <li><NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contacto</NavLink></li>
           <li><NavLink to="/reseñas" className={({ isActive }) => isActive ? 'active' : ''}>Reseñas</NavLink></li>
           {(user?.rol === 'admin' || user?.rol === 'gerente') && (
@@ -173,6 +174,7 @@ const NavbarDiseño = () => {
                 Calcular Financiamiento
               </button>
             </li>
+            <li onClick={closeMenu}><NavLink to="/agendar-cita" className={({ isActive }) => isActive ? 'active' : ''}>Agendar cita</NavLink></li>
             <li onClick={closeMenu}><NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contacto</NavLink></li>
             <li onClick={closeMenu}><NavLink to="/reseñas" className={({ isActive }) => isActive ? 'active' : ''}>Reseñas</NavLink></li>
           {(user?.rol === 'admin' || user?.rol === 'gerente') && (

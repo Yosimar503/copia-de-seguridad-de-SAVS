@@ -474,28 +474,26 @@ const TrackingManagement = () => {
 
               return (
                 <div key={user.id} className={`tracking-user-card ${isOpen ? 'expanded' : ''}`}>
-
-                  {/* Fila principal */}
                   <div
                     onClick={() => setExpanded(isOpen ? null : user.id)}
                     className="tracking-card-header"
                   >
-                    {/* Avatar */}
-                    <div className="tracking-avatar">
-                      {user.image
-                        ? <img src={user.image} alt="" />
-                        : (user.nombre?.charAt(0) || 'U')}
+                    <div className="tracking-chevron">
+                      {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </div>
-
-                    {/* Nombre */}
-                    <div className="tracking-user-info">
-                      <div className="user-name-text">{user.nombre}</div>
-                      <div className="user-email-text">
-                        <Mail size={12} /> {user.email}
+                    <div className="tracking-card-header-top">
+                      <div className="tracking-avatar">
+                        {user.image
+                          ? <img src={user.image} alt="" />
+                          : (user.nombre?.charAt(0) || 'U')}
+                      </div>
+                      <div className="tracking-user-info">
+                        <div className="user-name-text">{user.nombre}</div>
+                        <div className="user-email-text">
+                          <Mail size={12} /> {user.email}
+                        </div>
                       </div>
                     </div>
-
-                    {/* Vehículo */}
                     <div className="tracking-vehicle-summary">
                       {hasTrack ? (
                         <>
@@ -506,17 +504,11 @@ const TrackingManagement = () => {
                           <div className="badge-wrapper">{stageBadge(t.importStatus)}</div>
                         </>
                       ) : (
-                        <span className="no-tracking-text">Sin tracking</span>
+                        <span className="no-tracking-text">Sin tracking asignado</span>
                       )}
-                    </div>
-
-                    {/* Chevron */}
-                    <div className="tracking-chevron">
-                      {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </div>
                   </div>
 
-                  {/* Panel expandido de detalle */}
                   {isOpen && (
                     <div className="tracking-expanded-panel">
                       {hasTrack ? (

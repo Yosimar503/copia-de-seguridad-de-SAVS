@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from '../components/security/ProtectedRoute';
 import { AdminRoutes } from '../admin/routes/AdminRoutes';
 
-// Lazy loading de componentes para mejorar rendimiento inicial
 const Home = lazy(() => import('../pages/homepage/Home'));
 const Catalog = lazy(() => import('../pages/catalogpage/Catalog'));
 const VehicleDetails = lazy(() => import('../pages/VehicleDetails/VehicleDetails'));
@@ -13,7 +12,8 @@ const RedireccionContactos = lazy(() => import('../components/Redirecciones/Redi
 const RedireccionModeloAuto = lazy(() => import('../components/Redirecciones/RedireccionModeloAuto/RedireccionModeloAuto/RedireccionModeloAuto'));
 const CreditSimulator = lazy(() => import('../components/CreditSimulator/CreditSimulator'));
 const PerfilUsuarios = lazy(() => import('../components/PerfilDeUsuarios/PerfilUsuarios'));
-const IntercambioDeAutos = lazy(() => import('../components/IntercambioDeAutos/IntercambioDeAutos'));
+const VenderAutoPage = lazy(() => import('../pages/VenderAuto/VenderAutoPage'));
+const AgendarCita = lazy(() => import('../pages/AgendarCita/AgendarCita'));
 const Reseñas = lazy(() => import('../components/TechnicalGlossary/ApartadoDeReseñas/Reseñas'));
 const RecuperarPassword = lazy(() => import('../pages/RecuperarPassword/RecuperarPassword'));
 
@@ -21,11 +21,9 @@ const AppRoutes = () => {
   return (
     <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#eab308' }}>Cargando ruta...</div>}>
       <Routes>
-        {/* Redirecciones lógicas */}
         <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/inicio" element={<Navigate to="/" replace />} />
 
-        {/* Rutas Públicas */}
         <Route path="/" element={<Home />} />
         <Route path="/inventory" element={<Catalog />} />
         <Route path="/details" element={<VehicleDetails />} />
@@ -37,8 +35,7 @@ const AppRoutes = () => {
         <Route path="/simulate-credit" element={<CreditSimulator />} />
         <Route path="/reseñas" element={<Reseñas />} />
         <Route path="/recuperar" element={<RecuperarPassword />} />
-        
-        {/* Rutas Protegidas con Validación de Permisos (ProtectedRoute) */}
+
         <Route path="/perfil" element={
           <ProtectedRoute allowedRoles={['cliente', 'admin', 'gerente']}>
             <PerfilUsuarios />
@@ -46,14 +43,17 @@ const AppRoutes = () => {
         } />
         <Route path="/vender-auto" element={
           <ProtectedRoute allowedRoles={['cliente', 'admin', 'gerente']}>
-            <IntercambioDeAutos />
+            <VenderAutoPage />
           </ProtectedRoute>
         } />
-        
-        {/* Panel administrativo — Rutas anidadas en src/admin/ */}
+        <Route path="/agendar-cita" element={
+          <ProtectedRoute allowedRoles={['cliente', 'admin', 'gerente']}>
+            <AgendarCita />
+          </ProtectedRoute>
+        } />
+
         {AdminRoutes()}
 
-        {/* Manejo de rutas 404 / no encontrado */}
         <Route path="*" element={
           <div style={{ textAlign: 'center', padding: '100px 20px', color: 'white', minHeight: '60vh' }}>
             <h1 style={{ color: '#eab308', fontSize: '3rem', marginBottom: '1rem' }}>404</h1>

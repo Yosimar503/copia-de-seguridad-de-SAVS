@@ -9,6 +9,7 @@ const { Usuario } = require('../models');
 const path = require('path');
 const fs   = require('fs');
 const { generateBannerCopy } = require('../services/visionService');
+const { FACEBOOK_PAGE_URL } = require('../utils/facebookUrl');
 
 // Inicializar Resend (usaremos la API Key del .env de forma opcional)
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -90,7 +91,7 @@ const guardarBanners = (banners) => {
  */
 exports.getBanners = (req, res) => {
     try {
-        const banners = leerBanners();
+        const banners = leerBanners().map((b) => ({ ...b, enlace: FACEBOOK_PAGE_URL }));
         res.json({ success: true, banners });
     } catch (error) {
         console.error('Error leyendo banners:', error);
@@ -109,14 +110,14 @@ exports.crearBanner = (req, res) => {
             return res.status(400).json({ error: 'Debes seleccionar una imagen para el anuncio.' });
         }
 
-        const { titulo, descripcion, enlace } = req.body;
+        const { titulo, descripcion } = req.body;
         const banners = leerBanners();
 
         const nuevoBanner = {
             id:          Date.now(),
             titulo:      titulo      || 'Sin título',
             descripcion: descripcion || '',
-            enlace:      enlace      || '',
+            enlace:      FACEBOOK_PAGE_URL,
             imagen:      `/uploads/${req.file.filename}`,
             fechaSubida: new Date().toLocaleDateString('es-CR')
         };
@@ -183,7 +184,8 @@ exports.generateBannerCopyIA = async (req, res) => {
         res.json({
             success: true,
             titulo: copyText.titulo,
-            descripcion: copyText.descripcion
+            descripcion: copyText.descripcion,
+            enlace: FACEBOOK_PAGE_URL
         });
     } catch (error) {
         console.error('Error en generateBannerCopyIA:', error);

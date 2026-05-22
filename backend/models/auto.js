@@ -4,7 +4,13 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Auto extends Model {
     static associate(models) {
-      // define association here
+      Auto.belongsToMany(models.Promotion, {
+        through: models.PromotionVehicle,
+        foreignKey: 'autoId',
+        otherKey: 'promotionId',
+        as: 'promociones'
+      });
+      Auto.hasMany(models.Appointment, { foreignKey: 'autoId', as: 'citas' });
     }
   }
   Auto.init({
