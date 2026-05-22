@@ -10,6 +10,9 @@
  */
 
 const axios = require('axios');
+const crypto = require('crypto');
+
+const randomPick = (arr) => arr[crypto.randomInt(0, arr.length)];
 
 // Listas de datos para el analizador de metadatos local (Fallback)
 const BRANDS = [
@@ -40,22 +43,29 @@ const COLORS = [
 ];
 
 const GENERIC_PROMOS = [
-    {
-        titulo: "🔥 ¡El que buscás, llegó!",
-        descripcion: "Seminuevo premium, financiamiento flexible y entrega express. ¡No dejes pasar esta joya en SAVS!"
-    },
-    {
-        titulo: "⚡ Oferta que vuela",
-        descripcion: "Unidad impecable, precio imbatible y cotización en minutos. ¡Agendá tu prueba de manejo hoy!"
-    },
-    {
-        titulo: "✨ Tu próximo upgrade",
-        descripcion: "Importado, garantizado y listo para conquistar la ruta. ¡Llevátelo hoy con el mejor trato de CR!"
-    },
-    {
-        titulo: "🏆 Solo en SAVS",
-        descripcion: "Lujo, potencia y confort en un solo paquete. La unidad que todos quieren… ¡y vos podés tenerla!"
-    }
+    { titulo: '🔥 ¡El que buscás, llegó!', descripcion: 'Seminuevo premium, financiamiento flexible y entrega express. ¡Cotizá en Facebook!' },
+    { titulo: '⚡ Oferta que vuela', descripcion: 'Unidad impecable, precio imbatible. ¡Escribinos por FB y agendá tu prueba!' },
+    { titulo: '✨ Tu próximo upgrade', descripcion: 'Importado, garantizado y listo para la ruta. ¡Seguinos en Facebook y llevátelo!' },
+    { titulo: '🏆 Solo en SAVS', descripcion: 'Lujo, potencia y confort. La unidad que todos quieren… ¡cotizá ya en nuestra página!' },
+    { titulo: '💎 Joya sobre ruedas', descripcion: 'Brilla en la calle, historial claro y trato directo. ¡Más info en Facebook!' },
+    { titulo: '🚗 ¿SUV o sedán?', descripcion: 'Tenemos tu match perfecto importado. ¡Entrá a Facebook y pedí tu cotización!' },
+    { titulo: '📲 Cotizá en 1 clic', descripcion: 'Respuesta rápida, asesoría real y el mejor precio. ¡Visitanos en Facebook hoy!' },
+    { titulo: '🌟 Stock limitado', descripcion: 'Unidades que no duran. ¡Seguinos en FB y asegurá la tuya antes que se vaya!' },
+    { titulo: '🔑 Llave en mano', descripcion: 'Trámite ágil, financiamiento a tu medida. ¡Consultá disponibilidad en Facebook!' },
+    { titulo: '🇨🇷 Importado para vos', descripcion: 'Calidad USA/Japón con respaldo SAVS. ¡Cotizá por Facebook sin compromiso!' },
+    { titulo: '⏰ Cierra hoy', descripcion: 'Precio especial por tiempo limitado. ¡Escribinos en FB y reservá tu unidad!' },
+    { titulo: '🛣️ Listo para rodar', descripcion: 'Detalles impecables y entrega express. ¡Mandanos mensaje en Facebook!' }
+];
+
+const COPY_STYLE_HINTS = [
+    'Tono urgente: escasez, últimas unidades, no te quedés atrás.',
+    'Tono aspiracional: estilo de vida, status, tu próximo nivel.',
+    'Tono directo: precio, financiamiento, cotización rápida.',
+    'Tono emocional: familia, seguridad, confianza en la carretera.',
+    'Tono curioso: pregunta retórica que invite a hacer clic.',
+    'Tono exclusivo: solo en SAVS, importación premium.',
+    'Tono costarricense: vos, llevátelo, cotizá, vení a verlo.',
+    'Tono aventura: ruta, potencia, terreno, libertad.'
 ];
 
 /**
@@ -184,39 +194,50 @@ function generateFallbackCopy(originalName) {
     
     // Si el nombre es genérico o consiste principalmente de IDs numéricos
     if (isGenericOrNumericName(info.cleanName) && (!info.brand || !info.model)) {
-        // Seleccionar de forma consistente una promo de alta conversión usando la longitud del nombre
-        const genericIndex = (originalName || '').length % GENERIC_PROMOS.length;
-        const promo = GENERIC_PROMOS[genericIndex];
+        const promo = randomPick(GENERIC_PROMOS);
         titulo = promo.titulo;
         descripcion = promo.descripcion;
     } else if (info.brand && info.model) {
         const yearStr = info.year ? ` ${info.year}` : '';
         const colorStr = info.color ? ` color ${info.color.toLowerCase()}` : '';
-        
+
         const titles = [
             `🔥 ¡${info.brand} ${info.model}${yearStr} te espera!`,
             `⚡ ${info.brand} ${info.model}${yearStr} — ¡Ya es tuyo!`,
             `✨ El ${info.brand} ${info.model}${yearStr} que todos quieren`,
-            `🏆 ${info.brand} ${info.model}${yearStr}: potencia pura`
+            `🏆 ${info.brand} ${info.model}${yearStr}: potencia pura`,
+            `💎 ${info.brand} ${info.model}${yearStr} en SAVS`,
+            `🚗 ¿Buscás ${info.model}? Acá está`,
+            `📲 Cotizá tu ${info.brand} ${info.model}${yearStr}`,
+            `⏰ ${info.brand} ${info.model}${yearStr} — stock limitado`
         ];
-        const titleIndex = originalName.length % titles.length;
-        titulo = titles[titleIndex];
-        
         const descriptions = [
-            `Brilla en la calle${colorStr}, impecable y listo para rodar. ¡Financiamiento a tu medida en SAVS!`,
-            `Diseño que roba miradas${colorStr} y rendimiento de primera. ¡Cotizá ahora antes que se vaya!`,
-            `Confort premium${colorStr}, garantía total y entrega express. Tu upgrade empieza hoy en SAVS.`,
-            `La unidad soñada${colorStr}: elegancia, potencia y el mejor precio. ¡Agendá tu prueba de manejo ya!`
+            `Brilla en la calle${colorStr}, impecable y listo. ¡Cotizá en Facebook!`,
+            `Diseño que roba miradas${colorStr}. ¡Escribinos por FB antes que se vaya!`,
+            `Confort premium${colorStr} y entrega express. ¡Seguinos en Facebook!`,
+            `Elegancia y potencia${colorStr} al mejor precio. ¡Mandanos mensaje en FB!`,
+            `Importado con respaldo SAVS${colorStr}. ¡Pedí info en nuestra página de Facebook!`,
+            `Financiamiento flexible${colorStr}. ¡Agendá por Facebook hoy!`,
+            `Unidad verificada${colorStr}, trato directo. ¡Cotizá sin compromiso en FB!`,
+            `Tu upgrade empieza acá${colorStr}. ¡Visitá Facebook y reservá!`
         ];
-        const descIndex = originalName.length % descriptions.length;
-        descripcion = descriptions[descIndex];
+        titulo = randomPick(titles);
+        descripcion = randomPick(descriptions);
     } else {
         const nameCleaned = info.cleanName && info.cleanName.length > 3 ? info.cleanName : 'Vehículo Exclusivo';
         const formattedName = nameCleaned.charAt(0).toUpperCase() + nameCleaned.slice(1);
-        
-        titulo = `🔥 ¡${formattedName} — oportunidad única!`;
-        const colorStr = info.color ? ` color ${info.color.toLowerCase()}` : '';
-        descripcion = `Impecable${colorStr}, garantizado y con financiamiento flexible. ¡No lo dejes escapar en Importadora SAVS!`;
+        const genericTitles = [
+            `🔥 ¡${formattedName} — oportunidad única!`,
+            `⚡ ${formattedName}: ¡no lo dejes pasar!`,
+            `✨ Descubrí ${formattedName} en SAVS`
+        ];
+        const genericDescs = [
+            'Impecable, garantizado y financiamiento flexible. ¡Cotizá en Facebook!',
+            'Importado con respaldo total. ¡Escribinos por FB y agendá tu visita!',
+            'Precio competitivo y entrega ágil. ¡Más detalles en nuestra página de Facebook!'
+        ];
+        titulo = randomPick(genericTitles);
+        descripcion = randomPick(genericDescs);
     }
     
     // Validar límites de longitud para encajar perfecto en el diseño
@@ -471,12 +492,12 @@ async function generateBannerCopy(base64Data, mimeType, originalName = '') {
                             },
                             {
                                 type: 'text',
-                                text: 'Crea un anuncio creativo y muy llamativo para clientes de Importadora SAVS. Titular con gancho emocional o de urgencia, descripcion que venda el vehiculo visible en la foto. Sé original, no uses clichés. Solo JSON con titulo y descripcion.'
+                                text: `Crea un anuncio NUEVO y distinto (no repitas frases típicas) para Importadora SAVS, Costa Rica. Estilo: ${randomPick(COPY_STYLE_HINTS)} Variación #${crypto.randomInt(1000, 99999)}. Titular con gancho fuerte; descripción con CTA hacia Facebook. Solo JSON con titulo y descripcion.`
                             }
                         ]
                     }
                 ],
-                temperature: 0.9,
+                temperature: 1,
                 max_tokens: 300
             },
             {
