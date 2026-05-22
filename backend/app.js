@@ -57,6 +57,8 @@ app.use('/api/technical_glossary', require('./routes/technicalGlossary'));
 app.use('/api/settings', require('./routes/settings'));
 app.use('/api/chatbot', require('./routes/chatbot'));
 app.use('/api/marketing', require('./routes/marketing'));
+app.use('/api/appointments', require('./routes/appointments'));
+app.use('/api/points', require('./routes/points'));
 
 app.get('/', (req, res) => {
     res.json({ message: '🚗 API del Sistema de Venta de Autos en línea' });

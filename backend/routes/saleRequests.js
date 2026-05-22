@@ -4,6 +4,7 @@ const saleRequestController = require('../controllers/saleRequestController');
 
 const { verificarToken, esAdmin, esAdminOGerente } = require('../middlewares/authMiddleware');
 
+router.get('/mine', verificarToken, saleRequestController.getMine);
 router.get('/', verificarToken, esAdminOGerente, saleRequestController.getAll);
 router.get('/:id', verificarToken, esAdminOGerente, saleRequestController.getById);
 router.post('/', verificarToken, saleRequestController.create); 

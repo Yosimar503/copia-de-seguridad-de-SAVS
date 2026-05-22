@@ -64,7 +64,15 @@ exports.register = async (req, res) => {
             telefono,
             ubicacion: ubicacion || 'Costa Rica',
             direccion_precisa,
-            favorites: []
+            favorites: [],
+            puntos: 500,
+            puntos_historial: [{
+                id: '1',
+                tipo: 'ganado',
+                cantidad: 500,
+                descripcion: 'Bienvenida — registro de cuenta',
+                fecha: new Date().toISOString()
+            }]
         });
 
         res.status(201).json({ message: 'Usuario registrado con éxito', usuarioId: nuevoUsuario.id });

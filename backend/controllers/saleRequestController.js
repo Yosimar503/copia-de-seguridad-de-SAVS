@@ -17,6 +17,19 @@ exports.getAll = async (req, res) => {
     }
 };
 
+/** Solicitudes del usuario autenticado (trade-in) */
+exports.getMine = async (req, res) => {
+    try {
+        const data = await SaleRequest.findAll({
+            where: { userId: req.usuario.id },
+            order: [['createdAt', 'DESC']]
+        });
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 /**
  * Obtiene los detalles de una solicitud de venta específica por su ID.
  */

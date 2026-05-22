@@ -1,0 +1,107 @@
+@baseUrl = http://localhost:5000/api
+@token = {{login.response.body.token}}
+
+### Auth — Register (201 / 400)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Test QA",
+  "email": "qa.test@ejemplo.com",
+  "password": "Password1",
+  "telefono": "+506 88888888"
+}
+
+### Auth — Login (200 / 401)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "yosimarvv@gmail.com",
+  "password": "yosi12345."
+}
+
+### Auth — Me (200 / 401)
+GET {{baseUrl}}/auth/me
+
+### Auth — Login inválido (401)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "no@existe.com",
+  "password": "wrong"
+}
+
+### Vehicles — List (200)
+GET {{baseUrl}}/vehicles?page=1&limit=12
+
+### Vehicles — Not found (404)
+GET {{baseUrl}}/vehicles/id-inexistente
+
+### Marketing — Banners públicos (200)
+GET {{baseUrl}}/marketing/banners
+
+### Sale requests — Mine (200 / 401)
+GET {{baseUrl}}/sale_requests/mine
+
+### Sale requests — Create trade-in (201 / 401)
+POST {{baseUrl}}/sale_requests
+Content-Type: application/json
+
+{
+  "id": "test-trade-1",
+  "marca": "Toyota",
+  "modelo": "Corolla",
+  "anio": 2020,
+  "kilometraje": 50000,
+  "precio": 8000000,
+  "descripcion": "[Bueno] Excelente estado",
+  "estado": "Pendiente",
+  "userId": "user-id",
+  "imagen": "data:image/png;base64,iVBORw0KGgo="
+}
+
+### Requests — Mine (200 / 401)
+GET {{baseUrl}}/requests/mine
+
+### Appointments — Mine (200 / 401)
+GET {{baseUrl}}/appointments/mine
+
+### Appointments — Create (201 / 400)
+POST {{baseUrl}}/appointments
+Content-Type: application/json
+
+{
+  "fecha": "2026-06-01",
+  "hora": "10:00",
+  "tipo_servicio": "Prueba de manejo",
+  "notas": "Cita de prueba"
+}
+
+### Points — Mine (200 / 401)
+GET {{baseUrl}}/points/mine
+
+### Points — Redeem sin saldo (400)
+POST {{baseUrl}}/points/redeem
+Content-Type: application/json
+
+{
+  "cantidad": 999999,
+  "descripcion": "Test"
+}
+
+### Branches — List (200)
+GET {{baseUrl}}/branches
+
+### Reviews — List (200)
+GET {{baseUrl}}/reviews
+
+### Chatbot — Sin mensaje (400/500)
+POST {{baseUrl}}/chatbot
+Content-Type: application/json
+
+{
+  "message": ""
+}

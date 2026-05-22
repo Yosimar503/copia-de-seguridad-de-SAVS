@@ -40,6 +40,17 @@ Importadora SAVS es una aplicación full-stack que sigue una **arquitectura de c
                                    └────────────────────┘
 ```
 
+### Módulos añadidos (auditoría 2026)
+
+| Módulo | Frontend | Backend |
+|--------|----------|---------|
+| Vender auto / Trade-in | `pages/VenderAuto`, `TradeIn/TradeInForm` | `GET/POST /api/sale_requests`, `/mine` |
+| Seguimiento perfil | `PerfilSeguimiento` | `/requests/mine`, `/sale_requests/mine` |
+| Puntos | `PerfilPuntos` | `/api/points` |
+| Citas | `pages/AgendarCita` | `/api/appointments` |
+| Promociones catálogo | `PromocionBadge` | `/api/marketing/banners` |
+| Errores globales | `ErrorBoundary`, `apiError.js` | — |
+
 ---
 
 ## Capas del Backend

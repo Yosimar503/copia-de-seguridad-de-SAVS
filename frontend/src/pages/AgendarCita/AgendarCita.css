@@ -1,0 +1,102 @@
+.agendar-cita-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  color: #fff;
+}
+
+.agendar-header h1 {
+  color: #eab308;
+  margin-bottom: 0.5rem;
+}
+
+.agendar-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.agendar-form,
+.agendar-list {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.agendar-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #d1d5db;
+}
+
+.agendar-form input,
+.agendar-form select,
+.agendar-form textarea {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #0a0a0a;
+  color: #fff;
+}
+
+.btn-agendar {
+  width: 100%;
+  padding: 12px;
+  background: #eab308;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cita-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #0a0a0a;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cita-card button {
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cita-estado {
+  font-size: 0.75rem;
+  color: #eab308;
+  text-transform: uppercase;
+}
+
+.empty-citas {
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem;
+}
+
+.field-error {
+  color: #ef4444;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .agendar-grid {
+    grid-template-columns: 1fr;
+  }
+  .agendar-cita-page {
+    padding: 1rem;
+  }
+}

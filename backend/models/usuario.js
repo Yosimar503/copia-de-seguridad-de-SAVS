@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
     telefono: DataTypes.STRING,
     ubicacion: DataTypes.STRING,
     direccion_precisa: DataTypes.STRING,
-    correo: DataTypes.STRING
+    correo: DataTypes.STRING,
+    tracking: DataTypes.JSON,
+    puntos: { type: DataTypes.INTEGER, defaultValue: 0 },
+    puntos_historial: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'Usuario',

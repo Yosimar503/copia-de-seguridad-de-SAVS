@@ -48,8 +48,9 @@ const ProtectedRoute = ({ children, allowedRoles = ['admin', 'gerente'] }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // 2. Si el rol no está permitido, redirigir al inicio o a una página de "No autorizado"
-  if (allowedRoles && !allowedRoles.includes(userRole)) {
+  // 2. Si el rol no está permitido, redirigir al inicio
+  const normalizedAllowed = allowedRoles.map((r) => r.toLowerCase());
+  if (allowedRoles && !normalizedAllowed.includes(userRole)) {
     return <Navigate to="/" replace />;
   }
 

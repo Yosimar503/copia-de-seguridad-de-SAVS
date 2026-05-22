@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
+import ErrorBoundary from './components/core/ErrorBoundary.jsx'
 
 // Validadores Globales de Input
 document.addEventListener('keydown', (e) => {
@@ -56,7 +57,9 @@ document.addEventListener('paste', (e) => {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </BrowserRouter>
   </StrictMode>,
 )
