@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test npx sequelize-cli db:migrate && cross-env NODE_ENV=test jest",
+    "test:verbose": "cross-env NODE_ENV=test npx sequelize-cli db:migrate && cross-env NODE_ENV=test jest --verbose",
+    "test:v1": "cross-env NODE_ENV=test jest __tests__/v1-modules.test.js __tests__/reportExport.test.js --verbose",
     "test:watch": "jest --watch",
     "start": "nodemon server.js",
     "db:init": "npx sequelize-cli db:migrate",
