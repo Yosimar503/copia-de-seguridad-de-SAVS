@@ -8,7 +8,9 @@ jest.mock('../models', () => ({
         findOne: jest.fn(),
         create: jest.fn(),
     },
-    Rol: {},
+    Rol: {
+        findOne: jest.fn().mockResolvedValue({ id: 2, nombre: 'Cliente' }),
+    },
     sequelize: {
         authenticate: jest.fn().mockResolvedValue(),
         define: jest.fn(),

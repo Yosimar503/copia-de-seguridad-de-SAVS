@@ -6,6 +6,7 @@ const app = require('../app');
 jest.mock('../models', () => ({
     Auto: {
         findAll: jest.fn(),
+        findAndCountAll: jest.fn(),
         findByPk: jest.fn(),
         create: jest.fn(),
         update: jest.fn(),
@@ -68,14 +69,19 @@ describe('GET /api/vehicles — Rutas públicas', () => {
 
     // ── V1: Obtener catálogo completo (público) ───────────────────────────
     test('V1 ✅ GET todos los autos → 200 con array (sin autenticación)', async () => {
-        Auto.findAll.mockResolvedValue([autoEjemplo, autoEjemplo2]);
+        Auto.findAndCountAll.mockResolvedValue({
+            count: 2,
+            rows: [autoEjemplo, autoEjemplo2],
+        });
 
         const res = await request(app).get('/api/vehicles');
 
         expect(res.statusCode).toBe(200);
-        expect(Array.isArray(res.body)).toBe(true);
-        expect(res.body).toHaveLength(2);
-        expect(res.body[0]).toHaveProperty('marca', 'Toyota');
+        expect(res.body).toHaveProperty('data');
+        expect(Array.isArray(res.body.data)).toBe(true);
+        expect(res.body.data).toHaveLength(2);
+        expect(res.body.data[0]).toHaveProperty('marca', 'Toyota');
+        expect(res.body.pagination).toHaveProperty('total', 2);
     });
 
     // ── V2: Obtener auto por ID (público) ────────────────────────────────
@@ -121,12 +127,20 @@ describe('POST /api/vehicles — Rutas protegidas (solo admin)', () => {
     // ── V5: Crear auto con token admin → 201 ─────────────────────────────
     test('V5 ✅ POST con token admin → 201 auto creado', async () => {
         mockAdminAuth();
-        Auto.create.mockResolvedValue({ id: 3, marca: 'Ford', modelo: 'Mustang', año: 2024, precio: 35000 });
+        const nuevoAuto = {
+            id: 3,
+            name: 'Ford Mustang',
+            marca: 'Ford',
+            modelo: 'Mustang',
+            year: 2024,
+            price: 35000,
+        };
+        Auto.create.mockResolvedValue(nuevoAuto);
 
         const res = await request(app)
             .post('/api/vehicles')
             .set('Cookie', 'token=token_valido_admin')
-            .send({ marca: 'Ford', modelo: 'Mustang', año: 2024, precio: 35000 });
+            .send({ name: 'Ford Mustang', marca: 'Ford', modelo: 'Mustang', year: 2024, price: 35000 });
 
         expect(res.statusCode).toBe(201);
         expect(res.body).toHaveProperty('marca', 'Ford');
@@ -146,14 +160,17 @@ describe('POST /api/vehicles — Rutas protegidas (solo admin)', () => {
 // ──────────────────────────────────────────────────────────────────────────
 describe('PUT & DELETE /api/vehicles — Operaciones de admin', () => {
 
-    beforeEach(() => jest.clearAllMocks());
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockAdminAuth();
+        Auto.findByPk.mockReset();
+        Auto.update.mockReset();
+    });
 
     // ── V7: Actualizar auto existente ────────────────────────────────────
     test('V7 ✅ PUT con token admin → 200 auto actualizado', async () => {
-        mockAdminAuth();
-        Auto.update.mockResolvedValue([1]); // 1 = número de filas afectadas
-        Auto.findByPk.mockResolvedValueOnce(usuarioAdmin) // para el middleware
-                     .mockResolvedValueOnce({ ...autoEjemplo, precio: 19000 }); // para el return
+        Auto.update.mockResolvedValue([1]);
+        Auto.findByPk.mockResolvedValue({ ...autoEjemplo, precio: 19000 });
 
         const res = await request(app)
             .put('/api/vehicles/1')
@@ -165,8 +182,12 @@ describe('PUT & DELETE /api/vehicles — Operaciones de admin', () => {
 
     // ── V8: Eliminar auto existente ──────────────────────────────────────
     test('V8 ✅ DELETE con token admin → 200 eliminado correctamente', async () => {
-        mockAdminAuth();
-        Auto.destroy.mockResolvedValue(1); // 1 = fila eliminada
+        const mockVehicle = {
+            id: '1',
+            image: null,
+            destroy: jest.fn().mockResolvedValue(undefined),
+        };
+        Auto.findByPk.mockResolvedValue(mockVehicle);
 
         const res = await request(app)
             .delete('/api/vehicles/1')
@@ -174,12 +195,12 @@ describe('PUT & DELETE /api/vehicles — Operaciones de admin', () => {
 
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('message', 'Eliminado correctamente');
+        expect(mockVehicle.destroy).toHaveBeenCalled();
     });
 
     // ── V9: Eliminar auto inexistente ────────────────────────────────────
     test('V9 ❌ DELETE auto inexistente → 404', async () => {
-        mockAdminAuth();
-        Auto.destroy.mockResolvedValue(0); // 0 = ninguna fila eliminada
+        Auto.findByPk.mockResolvedValue(null);
 
         const res = await request(app)
             .delete('/api/vehicles/999')

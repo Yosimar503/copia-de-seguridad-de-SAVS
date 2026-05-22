@@ -76,7 +76,7 @@ describe('POST /api/auth/login — Tests de Login', () => {
     });
 
     // ── L2: Usuario no existe ────────────────────────────────────────────
-    test('L2 ❌ Usuario no encontrado → 404 con error', async () => {
+    test('L2 ❌ Usuario no encontrado → 401 con error', async () => {
         // El usuario NO existe en la DB
         Usuario.findOne.mockResolvedValue(null);
 
@@ -84,7 +84,7 @@ describe('POST /api/auth/login — Tests de Login', () => {
             .post('/api/auth/login')
             .send(credencialesValidas);
 
-        expect(res.statusCode).toBe(404);
+        expect(res.statusCode).toBe(401);
         expect(res.body).toHaveProperty('error', 'Credenciales inválidas.');
     });
 

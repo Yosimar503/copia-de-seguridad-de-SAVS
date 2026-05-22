@@ -133,7 +133,7 @@ describe('Middleware — esAdmin', () => {
             .set('Cookie', 'token=token_valido_cliente');
 
         expect(res.statusCode).toBe(403);
-        expect(res.body).toHaveProperty('error', 'Acceso denegado. Se requiere rol de administrador.');
+        expect(res.body).toHaveProperty('error', 'Acceso denegado. Se requiere rol administrativo.');
     });
 
     // ── M5b: Usuario admin accede correctamente ──────────────────────────
