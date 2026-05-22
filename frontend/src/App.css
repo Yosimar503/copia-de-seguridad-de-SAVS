@@ -1,0 +1,47 @@
+/* App Layout Styles */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.home-main {
+  background-color: var(--color-bg-main);
+}
+
+.section-spacing {
+  padding: 5rem 0;
+}
+
+.catalogs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+  margin-top: 3rem;
+  margin-bottom: 6rem;
+}
+
+.content-container {
+  padding: 2rem 0;
+}
+
+/* Subtle separator for luxury feel */
+.home-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .section-spacing {
+    padding: 3rem 0;
+  }
+  .catalogs-container {
+    gap: 4rem;
+  }
+}

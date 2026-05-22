@@ -1,0 +1,172 @@
+.brands-section {
+  background-color: #1a1a1a;
+  padding: 10px 0; /* Espacio mínimo para el techo y piso */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SEO visibility utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.brands-container {
+  width: 100%;
+  max-width: 1400px; /* Slightly wider for the carousel */
+  margin: 0 auto;
+  overflow: hidden; /* Important for the carousel */
+  position: relative;
+  padding: 15px 0; /* Espacio vertical interno mucho más ajustado */
+}
+
+/* Gradient overlays for smooth fading edges */
+.brands-container::before,
+.brands-container::after {
+  content: "";
+  height: 100%;
+  width: 80px; /* Reducido de 150px para ver más logos */
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.brands-container::before {
+  left: 0;
+  background: linear-gradient(to right, #1a1a1a 0%, transparent 100%);
+}
+
+.brands-container::after {
+  right: 0;
+  background: linear-gradient(to left, #1a1a1a 0%, transparent 100%);
+}
+
+/* Wrapper to hold the lists */
+.brands-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.brands-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  list-style: none;
+  padding: 20px 0;
+  margin: 0;
+  width: max-content;
+  animation: scroll-v3 40s linear infinite; /* Slightly slower for 3 sets */
+  will-change: transform;
+}
+
+@keyframes scroll-v3 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333333%); }
+}
+
+.brand-item {
+  flex: 0 0 auto;
+  padding: 0 50px; /* Un punto medio de espaciado lateral */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.brand-item:hover {
+  z-index: 5; /* Ensure hovered item stays on top */
+}
+
+.brand-logo {
+  max-height: 85px; /* De vuelta al tamaño grande que te gustó */
+  max-width: 300px;
+  width: auto;
+  opacity: 1;
+  filter: brightness(0) invert(1);
+  transition: all 0.4s ease;
+  object-fit: contain;
+  transform: scale(1.1); /* Mantener el escalado para llenar espacio */
+}
+
+/* Hover Intercalado: Negro y Dorado */
+.brand-item:nth-child(odd):hover .brand-logo {
+  transform: scale(1.15); /* Aumentado un poco más en hover */
+  filter: brightness(0) drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+}
+
+.brand-item:nth-child(even):hover .brand-logo {
+  transform: scale(1.15);
+  /* Tono Dorado Premium */
+  filter: brightness(0) saturate(100%) invert(84%) sepia(51%) saturate(543%) hue-rotate(352deg) brightness(101%) contrast(104%) drop-shadow(0 0 12px rgba(212, 175, 55, 0.6));
+}
+
+/* Ajuste específico para Genesis que tiene mucho espacio vacío lateral */
+.brand-genesis {
+  padding: 0 5px; /* Reducir padding horizontal del ítem completo */
+}
+
+.brand-genesis .brand-logo {
+  transform: scale(1.5, 1.1);
+  margin: 0 -15px;
+}
+
+/* Genesis Hover - Robust Scaling and illumination */
+.brand-genesis:nth-child(even):hover .brand-logo {
+  transform: scale(1.6, 1.25);
+  filter: brightness(0) saturate(100%) invert(84%) sepia(51%) saturate(543%) hue-rotate(352deg) brightness(101%) contrast(104%) drop-shadow(0 0 12px rgba(212, 175, 55, 0.5));
+}
+
+.brand-genesis:nth-child(odd):hover .brand-logo {
+  transform: scale(1.6, 1.25);
+  filter: brightness(0) drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+
+
+/* Ajuste específico para Nissan que se ve pequeño */
+.brand-nissan {
+  padding: 0 40px; /* Reducir un poco el padding para que el logo más grande no se sienta apretado */
+}
+
+.brand-nissan .brand-logo {
+  transform: scale(1.4); /* Escalar el logo un 40% más */
+}
+
+/* Nissan Hover - Combining specific scale with general illumination */
+.brand-nissan:nth-child(even):hover .brand-logo {
+  transform: scale(1.55);
+  filter: brightness(0) saturate(100%) invert(84%) sepia(51%) saturate(543%) hue-rotate(352deg) brightness(101%) contrast(104%) drop-shadow(0 0 12px rgba(212, 175, 55, 0.6));
+}
+
+.brand-nissan:nth-child(odd):hover .brand-logo {
+  transform: scale(1.55);
+  filter: brightness(0) drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+}
+
+/* Continuous movement is handled in the main declaration */
+
+/* Responsividad: Ajustar scroll en móviles si es necesario, 
+   aunque el carrusel infinito funciona bien en todas las pantallas. */
+@media (max-width: 768px) {
+  .brand-item {
+    padding: 0 40px;
+  }
+  .brand-logo {
+    max-height: 30px;
+  }
+  .brands-container::before,
+  .brands-container::after {
+    width: 60px;
+  }
+}

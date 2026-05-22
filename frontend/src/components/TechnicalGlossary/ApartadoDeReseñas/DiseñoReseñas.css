@@ -1,0 +1,563 @@
+:root {
+  --primary-gold: #f5b400;
+  --dark-bg: #0a0a0a;
+  --card-bg: #141414;
+  --card-border: #252525;
+  --text-main: #ffffff;
+  --text-muted: #a0a0a0;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reviews-section {
+  background-color: var(--dark-bg);
+  color: var(--text-main);
+  padding: 80px 5%;
+  min-height: 100vh;
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+/* Header Styles */
+.reviews-header {
+  max-width: 1200px;
+  margin-bottom: 60px;
+  text-align: left;
+}
+
+.reviews-header h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 15px;
+  background: linear-gradient(to right, #ffffff, #888888);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.reviews-header p {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.btn-primary-gold {
+  background-color: var(--primary-gold);
+  color: #000;
+  border: none;
+  padding: 14px 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-primary-gold:hover {
+  background-color: #d49b00;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(245, 180, 0, 0.2);
+}
+
+/* Filters Styles */
+.filters-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 50px;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 15px;
+}
+
+.filter-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 5px;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition);
+}
+
+.filter-tab:hover {
+  color: var(--text-main);
+}
+
+.filter-tab.active {
+  color: var(--primary-gold);
+}
+
+.filter-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary-gold);
+  box-shadow: 0 0 10px var(--primary-gold);
+}
+
+/* Grid Styles */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Review Card Styles */
+.review-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 30px;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-card:hover {
+  border-color: var(--primary-gold);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.review-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 0;
+  background-color: var(--primary-gold);
+  transition: var(--transition);
+}
+
+.review-card:hover::before {
+  height: 100%;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--card-border);
+}
+
+.user-info h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--text-main);
+}
+
+.client-type {
+  font-size: 0.8rem;
+  color: var(--primary-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rating-stars {
+  color: var(--primary-gold);
+  margin-bottom: 15px;
+  display: flex;
+  gap: 4px;
+}
+
+.review-comment {
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  flex-grow: 1;
+  margin-bottom: 25px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--card-border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.verified-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #10b981;
+  font-weight: 600;
+}
+
+/* Add Review Special Card */
+.add-review-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  border: 2px dashed var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  cursor: pointer;
+  text-align: center;
+  min-height: 400px;
+}
+
+.add-review-card:hover {
+  border-color: var(--primary-gold);
+  background: linear-gradient(135deg, #1a1a1a 0%, #1a1500 100%);
+}
+
+.add-icon {
+  font-size: 3rem;
+  color: var(--primary-gold);
+}
+
+.add-review-card p {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 40px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: var(--primary-gold);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  background-color: #1a1a1a;
+  border: 1px solid var(--card-border);
+  color: white;
+  padding: 12px 15px;
+  border-radius: 6px;
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: var(--primary-gold);
+}
+
+textarea.form-control {
+  min-height: 120px;
+  resize: none;
+}
+
+.star-rating-input {
+  display: flex;
+  gap: 10px;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.star-input {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.star-input:hover {
+  transform: scale(1.2);
+}
+
+/* Modal y Formulario */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: #111;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh; /* Permitir que ocupe casi toda la pantalla */
+  overflow-y: auto; /* Scroll vertical */
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  border: 1px solid rgba(245, 180, 0, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Scrollbar personalizado para el modal */
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #111;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 10px;
+}
+
+/* Botón de subida de archivo (Estética de perfil) */
+.custom-file-upload-wrapper {
+  margin: 10px 0;
+}
+
+.custom-file-upload {
+  width: 100%;
+  color: #888;
+  font-size: 14px;
+  background: rgba(245, 180, 0, 0.05);
+  border: 1px dashed var(--gold);
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background: rgba(245, 180, 0, 0.1);
+  box-shadow: 0 0 15px rgba(245, 180, 0, 0.1);
+}
+
+.custom-file-upload::file-selector-button {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-right: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-file-upload::file-selector-button:hover {
+  background: #ffc422;
+  transform: translateY(-1px);
+}
+
+/* Previsualización en el Formulario */
+.preview-container {
+  position: relative;
+  margin-top: 15px;
+}
+
+.remove-img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 0, 0, 0.6);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Botones de acción (Admin/Gerente/Dueño) */
+.admin-actions {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.edit-btn {
+  background: rgba(245, 180, 0, 0.1);
+  color: var(--gold);
+}
+
+.edit-btn:hover {
+  background: var(--gold);
+  color: #000;
+}
+
+.delete-btn {
+  background: rgba(220, 53, 69, 0.1);
+  color: #ff4d4d;
+}
+
+.delete-btn:hover {
+  background: #ff4d4d;
+  color: #fff;
+}
+/* Imágenes del producto en las reseñas */
+.product-image-container {
+  margin: 15px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 180, 0, 0.2);
+  max-height: 250px;
+}
+
+.product-review-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.review-card:hover .product-review-image {
+  transform: scale(1.05);
+}
+
+.loading-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 50px;
+  color: var(--gold);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+/* Animación de entrada para las tarjetas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reviews-grid > * {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+
+.name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.owner-badge {
+  background: rgba(245, 180, 0, 0.1);
+  color: var(--gold);
+  border: 1px solid rgba(245, 180, 0, 0.3);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* SweetAlert Premium Styles */
+.premium-swal {
+  border-radius: 20px !important;
+  border: 1px solid rgba(245, 180, 0, 0.2) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reviews-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filters-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    justify-content: flex-start;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 30px 20px;
+  }
+}

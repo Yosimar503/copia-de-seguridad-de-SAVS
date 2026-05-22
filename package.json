@@ -1,0 +1,16 @@
+{
+  "name": "thedestinyvault-root",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+    "backend": "npm start --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "db:setup": "npm run db:init --prefix backend && npm run db:seed --prefix backend",
+    "setup": "npm run install:all && npm run db:setup"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

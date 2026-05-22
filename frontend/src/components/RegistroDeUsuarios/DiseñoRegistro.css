@@ -1,0 +1,201 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Outfit', 'Segoe UI', sans-serif;
+}
+
+.contenedorRegistro{
+display:flex;
+min-height:100vh;
+width:100%;
+background:#080808;
+padding-top:100px; /* Increased space for navbar and centering */
+position: relative;
+}
+
+/* LADO IZQUIERDO (IMAGEN) */
+.ladoImagen{
+flex:1;
+background-image:url("https://images.unsplash.com/photo-1503376780353-7e6692767b70");
+background-size:cover;
+background-position:center;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.overlay{
+position:absolute;
+width:100%;
+height:100%;
+background:linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9));
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:40px;
+color:white;
+}
+
+.overlay h1{
+font-size:32px;
+margin-bottom:15px;
+max-width:400px;
+color:#ffffff;
+}
+
+.overlay .gold-accent{
+color:#eab308;
+}
+
+.overlay p{
+font-size:15px;
+max-width:380px;
+opacity:0.8;
+color:#d1d5db;
+}
+
+/* LADO DERECHO (FORMULARIO) */
+.ladoFormulario{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#080808;
+border-left:1px solid rgba(234,179,8,0.1);
+position:relative;
+min-height: calc(100vh - 80px);
+}
+
+.formRegistro{
+  background: rgba(13, 13, 13, 0.85);
+  backdrop-filter: blur(15px);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 10;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.form-beam {
+  pointer-events: none;
+  z-index: -1;
+  inset: -1px !important;
+  border-radius: inherit !important;
+}
+
+.formRegistro:hover {
+transform: translateY(-2px);
+}
+
+.formRegistro h2{
+margin-bottom:4px;
+color:#ffffff;
+font-size:1.5rem;
+font-weight:700;
+}
+
+.formRegistro p.subtitle{
+color:#9ca3af;
+font-size:0.85rem;
+margin-bottom:12px;
+}
+
+.formRegistro label{
+display:block;
+font-size:0.75rem;
+font-weight:600;
+color:#e2e8f0;
+margin-top:6px;
+margin-bottom:2px;
+text-transform:uppercase;
+letter-spacing:0.05em;
+}
+
+.formRegistro input{
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  width: 100%;
+}
+
+.formRegistro input::placeholder{
+  color: #525252;
+}
+
+.formRegistro input:focus{
+  outline: none;
+  border-color: rgba(234, 179, 8, 0.6);
+  background: rgba(234, 179, 8, 0.05);
+  box-shadow: 
+    0 0 0 4px rgba(234, 179, 8, 0.1),
+    0 0 20px rgba(234, 179, 8, 0.15);
+  transform: translateY(-1px);
+}
+
+/* BOTON */
+.formRegistro button{
+margin-top:14px;
+padding:12px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg, #eab308, #ca8a04);
+color:#000000;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+transition:all 0.3s;
+font-family:inherit;
+animation: btnGlowPulse 8s ease-in-out infinite;
+}
+
+.formRegistro button:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 28px rgba(234,179,8,0.45);
+}
+
+/* TEXTO LOGIN */
+.loginText{
+margin-top:14px;
+text-align:center;
+font-size:13px;
+color:#9ca3af;
+}
+
+.loginText span{
+color:#eab308;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.ladoImagen{ display:none; }
+.ladoFormulario{ border-left:none; }
+.formRegistro{ width:90%; max-width:400px; }
+}
+/* --- LIGHT EFFECTS ANIMATIONS --- */
+@keyframes borderPan {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@keyframes btnGlowPulse {
+  0%, 100% { box-shadow: 0 4px 18px rgba(234, 179, 8, 0.25); }
+  50% { box-shadow: 0 4px 25px rgba(255, 255, 255, 0.15), 0 0 30px rgba(234, 179, 8, 0.2); }
+}

@@ -1,0 +1,52 @@
+.glossary-card {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 2rem;
+  height: 100%;
+}
+
+.glossary-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glossary-icon {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.glossary-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.glossary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.glossary-item {
+  transition: transform var(--transition-fast);
+}
+
+.glossary-item:hover {
+  transform: translateX(5px);
+}
+
+.glossary-term {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: white;
+}
+
+.glossary-definition {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.5;
+}

@@ -1,0 +1,105 @@
+========================================================================
+                      RESUMEN DE ENTREGA FINAL
+                         THE DESTINY VAULT
+========================================================================
+
+FECHA DE ENTREGA: 14 de Mayo de 2026
+PROYECTO: Aplicación Web Full-Stack para Importadora de Vehículos SAVS
+
+1. ARQUITECTURA TECNOLÓGICA (STACK)
+------------------------------------------------------------------------
+- Frontend: React.js (Vite), React Router v6, CSS Vanilla (Estilo 
+  Glassmorphism Premium), Framer Motion para micro-animaciones.
+- Backend: Node.js, Express.js.
+- Base de Datos: MySQL.
+- ORM: Sequelize (Sincronización de modelos relacionales).
+- Inteligencia Artificial: Integración con la API de Groq para el 
+  asistente virtual inteligente.
+
+2. CUMPLIMIENTO DEL ROADMAP (100% COMPLETADO)
+------------------------------------------------------------------------
+- Paginación y Filtrado Dinámico: Implementados a nivel de base de 
+  datos y cliente. Permite búsquedas complejas (rango de precios, 
+  año, marca, modelo, motor) optimizadas.
+- Integración Backend-Frontend: Toda la aplicación consume una API RESTful
+  propia (/api/v1/) sin datos estáticos hardcodeados.
+- Subida de Archivos: Implementación de Multer para la carga y 
+  gestión dinámica de imágenes de vehículos en el servidor.
+- Panel Administrativo (CRUD): Dashboard privado para gestionar el 
+  inventario, usuarios, solicitudes de intercambio (Trade-In) y reseñas.
+- Búsqueda Dinámica: Operadores LIKE integrados para búsquedas en 
+  tiempo real.
+
+3. ESTÁNDARES DE SEGURIDAD Y RENDIMIENTO
+------------------------------------------------------------------------
+- Autenticación y Autorización: Implementación robusta con JSON Web 
+  Tokens (JWT) almacenados de forma segura mediante cookies HttpOnly, 
+  previniendo vulnerabilidades XSS.
+- Protección de Rutas: Guards (Componente ProtectedRoute) que validan 
+  la sesión en el backend antes de renderizar vistas protegidas.
+- Hardening del Servidor: Uso de Helmet para cabeceras HTTP seguras y 
+  Express-Rate-Limit para mitigar ataques de fuerza bruta.
+- Variables de Entorno: Arquitectura segura. Las llaves sensibles de 
+  las APIs (IA) están abstraídas y protegidas en el backend.
+- Feedback Visual: Uso de spinners de carga asíncrona, SweetAlert2 y 
+  manejo de errores en toda la UI.
+
+4. CARACTERÍSTICAS INNOVADORAS
+------------------------------------------------------------------------
+- Asistente Virtual Inteligente (IA): Un chatbot contextual impulsado
+  por LLMs (Groq Cloud) que atiende dudas técnicas y redirige leads 
+  hacia el WhatsApp de ventas.
+- Diseño Premium: Interfaces oscuras con acentos dorados y efectos de 
+  cristal esmerilado (Glassmorphism) que refuerzan la imagen de alta gama.
+- Simulador de Créditos: Herramienta funcional en el frontend para el 
+  cálculo aproximado de cuotas mensuales.
+
+5. LIBRERÍAS Y DEPENDENCIAS UTILIZADAS
+------------------------------------------------------------------------
+A continuación, se detalla cómo se instalaron las extensiones y 
+librerías clave del proyecto:
+
+▶ FRONTEND (React + Vite)
+Instalación general: `npm install` (dentro de /frontend)
+Librerías destacadas:
+- react-router-dom: Enrutamiento SPA.
+  `npm install react-router-dom`
+- axios: Cliente HTTP para consumir el backend de forma estructurada.
+  `npm install axios`
+- lucide-react: Biblioteca de iconos vectoriales ligeros.
+  `npm install lucide-react`
+- motion (Framer Motion): Micro-animaciones fluidas e interactivas.
+  `npm install motion`
+- sweetalert2 & react-hot-toast: Alertas estéticas no bloqueantes.
+  `npm install sweetalert2 react-hot-toast`
+- recharts: Gráficos estadísticos para el panel administrativo.
+  `npm install recharts`
+- @emailjs/browser: Envío de correos desde el formulario de contacto.
+  `npm install @emailjs/browser`
+- concurrently: Ejecución paralela de frontend y backend (dev:full).
+  `npm install -D concurrently`
+
+▶ BACKEND (Node.js + Express)
+Instalación general: `npm install` (dentro de /backend)
+Librerías destacadas:
+- express & cors: Servidor web y control de acceso cruzado.
+  `npm install express cors`
+- mysql2 & sequelize: Motor de base de datos relacional y ORM.
+  `npm install mysql2 sequelize`
+  `npm install -D sequelize-cli`
+- bcrypt & jsonwebtoken: Hashing de contraseñas y emisión de JWT.
+  `npm install bcrypt jsonwebtoken`
+- cookie-parser: Lectura de cookies HttpOnly.
+  `npm install cookie-parser`
+- multer: Gestión de subida de archivos (imágenes de vehículos).
+  `npm install multer`
+- helmet, express-rate-limit, hpp, xss-clean: Suite de seguridad 
+  contra ataques comunes (Brute Force, XSS, polución de parámetros).
+  `npm install helmet express-rate-limit hpp xss-clean`
+- jest & supertest: Suite de pruebas unitarias y de integración API.
+  `npm install -D jest supertest`
+
+========================================================================
+El proyecto se entrega con el 100% de los requerimientos cumplidos, 
+cumpliendo con estándares de producción, escalabilidad y seguridad.
+========================================================================

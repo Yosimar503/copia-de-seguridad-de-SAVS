@@ -1,0 +1,314 @@
+.fc-carousel-container {
+  position: relative;
+  width: 100%;
+  height: 80vh; 
+  min-height: 500px;
+  max-height: 900px;
+  background-color: #080808;
+  overflow: hidden;
+  font-family: 'Outfit', 'Inter', sans-serif;
+}
+
+/* 3D Track Layout */
+.fc-slides-track {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.fc-slide-item {
+  position: absolute;
+  width: 55%;
+  height: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.7s cubic-bezier(0.3, 0, 0.2, 1);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 0;
+  transform: scale(0.5);
+}
+
+.fc-slide-image-contain {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 30px rgba(0,0,0,0.6));
+  border-radius: 12px;
+  transition: all 0.7s cubic-bezier(0.3, 0, 0.2, 1);
+}
+
+.fc-slide-active {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  visibility: visible;
+  z-index: 5;
+}
+
+.fc-slide-prev {
+  transform: translateX(-65%) scale(0.65);
+  opacity: 0.4;
+  visibility: visible;
+  z-index: 4;
+  cursor: pointer;
+  filter: brightness(0.6);
+}
+.fc-slide-prev:hover { opacity: 0.7; filter: brightness(0.8); }
+
+.fc-slide-next {
+  transform: translateX(65%) scale(0.65);
+  opacity: 0.4;
+  visibility: visible;
+  z-index: 4;
+  cursor: pointer;
+  filter: brightness(0.6);
+}
+.fc-slide-next:hover { opacity: 0.7; filter: brightness(0.8); }
+
+.fc-slide-hidden-left {
+  transform: translateX(-100%) scale(0.4);
+}
+.fc-slide-hidden-right {
+  transform: translateX(100%) scale(0.4);
+}
+
+/* Blur Background Transition Fixes */
+.fc-slide-bg-blur {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(25px) brightness(0.4);
+  transform: scale(1.05);
+  transition: background-image 0.6s ease-in-out;
+  z-index: 1;
+}
+
+.fc-slide-overlay-dark {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(8, 8, 8, 0.4);
+  z-index: 2;
+}
+
+.fc-slide-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 40%, transparent 100%);
+  z-index: 4;
+  pointer-events: none;
+}
+
+@keyframes fadeInText {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fc-slide-content {
+  position: absolute;
+  bottom: 12%;
+  left: 8%;
+  max-width: 650px;
+  z-index: 6;
+  opacity: 0;
+  animation: fadeInText 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+.fc-subtitle {
+  color: #dfdfdf;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fc-subtitle::before {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 2px;
+  background-color: #eab308;
+}
+
+.fc-title {
+  color: #ffffff;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.fc-text {
+  color: #b0b0b0;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  max-width: 90%;
+  font-weight: 300;
+}
+
+.fc-controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4%;
+  transform: translateY(-50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.fc-nav-btn {
+  pointer-events: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(12, 12, 12, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.fc-nav-btn:hover {
+  background: #eab308;
+  border-color: #eab308;
+  color: #000;
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(234, 179, 8, 0.4);
+}
+
+.fc-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.fc-indicators-wrapper {
+  position: absolute;
+  bottom: 5%;
+  left: 8%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.fc-indicators {
+  display: flex;
+  gap: 12px;
+}
+
+.fc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid transparent;
+  transition: all 0.4s ease;
+  padding: 0;
+  cursor: pointer;
+}
+
+.fc-dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.fc-dot-active {
+  background: transparent;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #eab308;
+  position: relative;
+}
+
+.fc-dot-active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #eab308;
+}
+
+.fc-play-pause-btn {
+  color: #a0a0a0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s, transform 0.2s;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.fc-play-pause-btn:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+@media (max-width: 900px) {
+  .fc-title {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .fc-carousel-container {
+    height: 70vh;
+    min-height: 400px;
+  }
+  .fc-slide-content {
+    left: 5%;
+    bottom: 15%;
+    max-width: 90%;
+  }
+  .fc-title {
+    font-size: 2rem;
+  }
+  .fc-text {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+  .fc-indicators-wrapper {
+    left: 5%;
+    bottom: 6%;
+  }
+  .fc-nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .fc-controls {
+    padding: 0 2%;
+  }
+}

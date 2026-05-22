@@ -1,0 +1,5 @@
+.catalog-page {
+  padding-top: 100px;
+  min-height: 100vh;
+  background-color: var(--color-bg-main);
+}

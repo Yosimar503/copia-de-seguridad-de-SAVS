@@ -1,0 +1,71 @@
+.animated-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 16px; /* Smooth rounded limits */
+  background: rgba(15, 15, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Slightly brighter outer border for fusion */
+  transition: border-color 0.3s ease;
+}
+
+.animated-input-wrapper:focus-within {
+  border-color: rgba(255, 255, 255, 0.3); /* Remove gold glow clash */
+}
+
+/* Adjust beam to fill the whole wrapper border seamlessly */
+.animated-input-beam {
+  pointer-events: none;
+  z-index: 0;
+  inset: -1px !important; /* Perfect overlap with the 1px wrapper border */
+  border-radius: inherit !important; /* Inherit the exact 16px corner ratio */
+}
+
+.animated-input-field {
+  width: 100%;
+  padding: 1.4rem 1.2rem 0.6rem 1.2rem !important; /* Push text down to avoid overlap */
+  background: transparent !important;
+  border: none !important;
+  color: #fff;
+  font-size: 1rem !important;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  z-index: 1; /* Above beam */
+  position: relative;
+}
+
+.animated-input-field.has-icon {
+  padding-left: 2.5rem;
+}
+
+.animated-input-label {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  transform-origin: left top;
+  margin: 0 !important; /* Block global form margin overrides */
+  padding: 0 0.4rem !important;
+  color: #9ca3af;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem !important;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent; 
+  border-radius: 4px;
+}
+
+.animated-icon-wrapper {
+  position: absolute;
+  left: 0.8rem;
+  z-index: 2;
+  color: #9ca3af;
+}
+
+/* Fix background overlap for label */
+.animated-input-wrapper:focus-within .animated-input-label,
+.animated-input-label.floating {
+  background: #0d0d0d; /* Match form background precisely */
+}

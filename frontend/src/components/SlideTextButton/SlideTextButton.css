@@ -1,0 +1,83 @@
+.slide-btn-wrapper {
+  animation: slideBtnIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateX(30px);
+  display: inline-block;
+}
+
+@keyframes slideBtnIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.slide-text-btn {
+  position: relative;
+  display: inline-flex;
+  height: 2.5rem;
+  min-width: 130px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  padding: 0 1.5rem;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: #000;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.25);
+}
+
+.slide-text-btn:hover {
+  background: linear-gradient(135deg, #fbbf24 0%, #eab308 100%);
+  box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4);
+  transform: translateY(-2px);
+}
+
+.slide-text-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-text-btn:hover .slide-text-container {
+  transform: translateY(-50%);
+}
+
+.slide-text-main, .slide-text-hover {
+  height: 50%; /* Takes exactly one half of the 200% height = 100% of button height */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-text-main {
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+}
+
+.slide-text-btn:hover .slide-text-main {
+  opacity: 0;
+}
+
+.slide-text-hover {
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+.slide-text-btn:hover .slide-text-hover {
+  opacity: 1;
+}
+
+.slide-text-font {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}

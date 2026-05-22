@@ -1,0 +1,48 @@
+==========================================================
+   ROADMAP DE DESARROLLO - THE DESTINY VAULT
+==========================================================
+
+Este documento detalla las tareas requeridas para la 
+integración total entre el Backend y el Frontend.
+
+--- 🚀 BACKEND (Prioridad: Alta) ---
+
+[x] 1. PAGINACIÓN: Implementar parámetros 'page' y 'limit' en los 
+       listados (especialmente en vehículos).
+[x] 2. FILTROS DINÁMICOS: Permitir filtrado por marca, precio, año 
+       y kilometraje vía Query Strings (?brand=...&price=...).
+[x] 3. BÚSQUEDA: Implementar búsqueda por texto libre (Search) 
+       usando operadores LIKE en Sequelize.
+[x] 4. UPLOAD DE ARCHIVOS: Configurar Multer para la subida de 
+       imágenes de los vehículos.
+[x] 5. SEGURIDAD: Revisar y asegurar que todos los endpoints 
+       tengan el middleware de protección y roles (esAdmin).
+[x] 6. HTTP STATUS: Estandarizar códigos de respuesta (201 para 
+       Created, 204 para Deleted, 400/401/403 para errores).
+
+--- 🎨 FRONTEND (Prioridad: Media-Alta) ---
+
+[x] 1. INTEGRACIÓN API: Reemplazar datos estáticos (mocks) por 
+       llamadas a /api/v1/ usando Axios o Fetch.
+[x] 2. LÓGICA DE FILTROS: Conectar los componentes de filtrado 
+       con los nuevos parámetros del Backend.
+[x] 3. DASHBOARD ADMIN: Crear/Finalizar las vistas para crear, 
+       editar y eliminar vehículos desde la web.
+[x] 4. PROTECCIÓN DE RUTAS: Implementar lógica para que solo 
+       usuarios autenticados vean ciertas páginas.
+[x] 5. MANEJO DE ESTADOS: Agregar Spinners (loading) y mensajes 
+       de error claros para el usuario final.
+
+--- 📝 DOCUMENTACIÓN Y CALIDAD ---
+
+[x] 1. .ENV.EXAMPLE: Crear ejemplo de variables de entorno 
+       necesarias para el despliegue.
+[x] 2. POSTMAN: Exportar la colección actualizada de todos 
+       los endpoints funcionales.
+[x] 3. VALIDACIONES: Asegurar que los formularios tengan 
+       validación tanto en cliente como en servidor.
+
+==========================================================
+ESTADO FINAL: 100% COMPLETADO ✅
+Generado el: 14/05/2026
+==========================================================

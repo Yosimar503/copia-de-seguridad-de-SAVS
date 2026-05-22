@@ -1,0 +1,673 @@
+/* Variables de color basadas en la descripción */
+:root {
+  --bg-dark: #0f0f11;
+  --bg-panel: #1a1a1e;
+  --bg-card: #222227;
+  --gold-accent: #f5b400;
+  --gold-hover: #ffd966;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0ab;
+  --border-color: #33333a;
+  --danger: #ff4d4d;
+  --success: #00cc66;
+}
+
+/* Contenedor Principal */
+.vender-auto-container {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.vender-auto-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.vender-auto-header h1 {
+  color: var(--gold-accent);
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.vender-auto-header p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Layout dividido */
+.vender-auto-layout {
+  display: flex;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+/* Panel Izquierdo: Formulario con Efecto de Luz */
+.vender-auto-form-section {
+  flex: 1;
+  position: relative;
+}
+
+.form-card-glow {
+  background-color: var(--bg-panel);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.form-card-glow:hover {
+  transform: translateY(-5px);
+}
+
+/* Efecto de borde de luz animado */
+.form-card-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px; /* Grosor del borde */
+  border-radius: inherit;
+  background: linear-gradient(90deg, 
+    rgba(245, 180, 0, 0.1), 
+    rgba(245, 180, 0, 0.8), 
+    rgba(255, 255, 255, 0.9), 
+    rgba(245, 180, 0, 0.8), 
+    rgba(245, 180, 0, 0.1)
+  );
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  animation: borderPan 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes borderPan {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.form-card-glow h2 {
+  color: var(--gold-accent);
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.vender-auto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form-group input, 
+.form-group textarea {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(245, 180, 0, 0.2);
+  color: var(--text-primary);
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus,
+.form-control-admin:focus {
+  outline: none;
+  border-color: var(--gold-accent);
+  background: rgba(245, 180, 0, 0.08);
+  box-shadow: 0 0 15px rgba(245, 180, 0, 0.15), 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.form-control-admin {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(245, 180, 0, 0.4); /* Un poco más brillante para indicar control admin */
+  color: var(--gold-accent);
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.form-control-admin option {
+  background-color: var(--bg-panel);
+  color: white;
+}
+
+/* Custom File Upload */
+.file-upload-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+.file-upload-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.file-upload-custom {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-color);
+  padding: 15px;
+  text-align: center;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.file-upload-wrapper:hover .file-upload-custom {
+  border-color: var(--gold-accent);
+  color: var(--gold-accent);
+  background-color: rgba(245, 180, 0, 0.05);
+}
+
+.image-preview {
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 100%;
+  border: 1px solid var(--border-color);
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Botones Formulario */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.btn-submit {
+  flex: 1;
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: #000000;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  animation: btnGlowPulse 8s ease-in-out infinite;
+  box-shadow: 0 4px 18px rgba(234, 179, 8, 0.35);
+}
+
+@keyframes btnGlowPulse {
+  0%, 100% { box-shadow: 0 4px 18px rgba(234, 179, 8, 0.25); }
+  50% { box-shadow: 0 4px 25px rgba(255, 255, 255, 0.15), 0 0 30px rgba(234, 179, 8, 0.2); }
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fbbf24 0%, #eab308 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(234, 179, 8, 0.45);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-secondary);
+}
+
+
+/* Panel Derecho: Lista de Autos */
+.vender-auto-list-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vender-auto-list-section h2 {
+  color: var(--text-primary);
+  margin-top: 0;
+  padding-left: 5px;
+  margin-bottom: 5px;
+  font-size: 1.5rem;
+}
+
+.loading-req {
+  color: var(--gold-accent);
+  text-align: center;
+  padding: 50px;
+}
+
+.empty-state {
+  background-color: var(--bg-panel);
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px dashed var(--border-color);
+}
+
+.empty-state p {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.empty-state span {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.vehiculos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vehiculo-card {
+  display: flex;
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.vehiculo-card:hover {
+  border-color: rgba(245, 180, 0, 0.5);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 10px rgba(245, 180, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.vehiculo-card-image {
+  width: 200px;
+  position: relative;
+  background-color: var(--bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vehiculo-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.vende-status-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--bg-dark);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.status-pendiente { background-color: #6c757d; color: white; }
+.status-revision { background-color: var(--gold-accent); }
+.status-aprobado { background-color: var(--success); color: white; }
+.status-rechazado { background-color: var(--danger); color: white; }
+
+.vehiculo-card-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.vehiculo-card-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vehiculo-card-content h3 span {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: normal;
+}
+
+.vehiculo-price {
+  color: var(--gold-accent);
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 5px 0 15px 0;
+}
+
+.vehiculo-details {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.vehiculo-details strong {
+  color: var(--text-primary);
+}
+
+.vehiculo-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* line-clamp fallback */
+  line-clamp: 2;
+}
+
+/* Seller Info en Admin */
+.seller-info {
+  background-color: rgba(245, 180, 0, 0.05);
+  border: 1px solid rgba(245, 180, 0, 0.2);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.seller-info h4 {
+  color: var(--gold-accent);
+  font-size: 0.85rem;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.seller-info p {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.seller-info i {
+  color: var(--gold-accent);
+  width: 15px;
+}
+
+.vehiculo-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.btn-edit, .btn-delete {
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.btn-edit {
+  background-color: transparent;
+  color: var(--gold-accent);
+  border: 1px solid var(--gold-accent);
+}
+
+.btn-edit:hover {
+  background-color: rgba(245, 180, 0, 0.1);
+}
+
+.btn-delete {
+  background-color: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.btn-delete:hover {
+  background-color: rgba(255, 77, 77, 0.1);
+}
+
+.btn-accept {
+  background-color: transparent;
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.btn-accept:hover {
+  background-color: rgba(0, 204, 102, 0.1);
+}
+
+.btn-reject {
+  background-color: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.btn-reject:hover {
+  background-color: rgba(255, 77, 77, 0.1);
+}
+
+.btn-message {
+  background-color: transparent;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+}
+
+.btn-message:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Admin specific buttons */
+.btn-approve, .btn-reject, .btn-respond {
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  flex: 1;
+}
+
+.btn-approve {
+  background-color: var(--success);
+  color: white;
+  border: none;
+}
+
+.btn-approve:hover {
+  background-color: #00b359;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 204, 102, 0.3);
+}
+
+.btn-reject {
+  background-color: var(--danger);
+  color: white;
+  border: none;
+}
+
+.btn-reject:hover {
+  background-color: #e60000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 0, 0, 0.3);
+}
+
+.btn-respond {
+  background-color: transparent;
+  color: var(--gold-accent);
+  border: 1px solid var(--gold-accent);
+}
+
+.btn-respond:hover {
+  background-color: var(--gold-accent);
+  color: black;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 180, 0, 0.3);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+}
+
+.modal-content h3 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.modal-warning {
+  color: var(--danger) !important;
+  font-size: 0.9rem;
+  margin-bottom: 25px !important;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn-delete-confirm {
+  background-color: var(--danger);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3;
+}
+
+.btn-delete-confirm:hover {
+  background-color: #e60000;
+}
+
+
+/* Responsive */
+@media (max-width: 992px) {
+  .vender-auto-layout {
+    flex-direction: column;
+  }
+  
+  .vender-auto-form-section, .vender-auto-list-section {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-group-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .vehiculo-card {
+    flex-direction: column;
+  }
+  
+  .vehiculo-card-image {
+    width: 100%;
+    height: 150px;
+  }
+}

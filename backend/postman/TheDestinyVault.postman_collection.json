@@ -1,0 +1,466 @@
+{
+  "info": {
+    "name": "The Destiny Vault API",
+    "description": "Colección completa de endpoints para la API de The Destiny Vault - Sistema de Venta de Autos.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Test User\",\n  \"email\": \"test@ejemplo.com\",\n  \"password\": \"password123\",\n  \"telefono\": \"+506 12345678\",\n  \"ubicacion\": \"San José\",\n  \"direccion_precisa\": \"Barrio Escalante\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/login",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"yosimarvv@gmail.com\",\n  \"password\": \"yosi12345.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/logout"
+          }
+        },
+        {
+          "name": "Get Me (Perfil actual)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/me"
+          }
+        },
+        {
+          "name": "Check Email",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/check-email",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"yosimarvv@gmail.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/auth/reset-password",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"ID_DEL_USUARIO\",\n  \"newPassword\": \"nuevaPassword123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "Get All (con paginación y filtros)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/vehicles?page=1&limit=20&sort=createdAt&order=DESC",
+              "host": ["{{baseUrl}}"],
+              "path": ["vehicles"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "type", "value": "", "disabled": true },
+                { "key": "fuel", "value": "", "disabled": true },
+                { "key": "transmission", "value": "", "disabled": true },
+                { "key": "tag", "value": "", "disabled": true },
+                { "key": "color", "value": "", "disabled": true },
+                { "key": "minPrice", "value": "", "disabled": true },
+                { "key": "maxPrice", "value": "", "disabled": true },
+                { "key": "minYear", "value": "", "disabled": true },
+                { "key": "maxYear", "value": "", "disabled": true },
+                { "key": "sort", "value": "createdAt" },
+                { "key": "order", "value": "DESC" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/vehicles/1"
+          }
+        },
+        {
+          "name": "Create (JSON)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vehicles",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Toyota Corolla XSE\",\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"year\": 2024,\n  \"price\": 25000,\n  \"mileage\": \"0 km\",\n  \"color\": \"Blanco\",\n  \"tag\": \"Disponible\",\n  \"type\": \"Sedán\",\n  \"fuel\": \"Gasolina\",\n  \"transmission\": \"Automática\",\n  \"image\": \"https://example.com/corolla.jpg\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Create (con imagen Multer)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vehicles",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "name", "value": "Honda CR-V", "type": "text" },
+                { "key": "marca", "value": "Honda", "type": "text" },
+                { "key": "modelo", "value": "CR-V", "type": "text" },
+                { "key": "year", "value": "2024", "type": "text" },
+                { "key": "price", "value": "32000", "type": "text" },
+                { "key": "mileage", "value": "0 km", "type": "text" },
+                { "key": "color", "value": "Negro", "type": "text" },
+                { "key": "tag", "value": "Disponible", "type": "text" },
+                { "key": "type", "value": "SUV", "type": "text" },
+                { "key": "fuel", "value": "Gasolina", "type": "text" },
+                { "key": "transmission", "value": "Automática", "type": "text" },
+                { "key": "image", "type": "file", "src": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update (PUT)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/vehicles/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Toyota Corolla XSE Updated\",\n  \"price\": 28000,\n  \"tag\": \"Vendido\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/vehicles/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 26000\n}"
+            }
+          }
+        },
+        {
+          "name": "Update con imagen (PATCH + Multer)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/vehicles/1",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "price", "value": "27000", "type": "text" },
+                { "key": "image", "type": "file", "src": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/vehicles/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (Admin Only)",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users" }
+        },
+        {
+          "name": "Get User By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/2" }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Nuevo Usuario\",\n  \"email\": \"nuevo@ejemplo.com\",\n  \"password\": \"password123\",\n  \"rolId\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Update User (PUT)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/users/2",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Usuario Modificado\",\n  \"email\": \"modificado@ejemplo.com\",\n  \"rolId\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Update User Parcial (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/users/2",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rolId\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/users/2" }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Get All Reviews",
+          "request": { "method": "GET", "url": "{{baseUrl}}/reviews" }
+        },
+        {
+          "name": "Get Review By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/reviews/1" }
+        },
+        {
+          "name": "Create Review (auth required)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/reviews",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Excelente servicio\",\n  \"content\": \"Muy buena experiencia de compra.\",\n  \"rating\": 5\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Review (Admin)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/reviews/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"rating\": 4\n}" }
+          }
+        },
+        {
+          "name": "Delete Review (Admin)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/reviews/1" }
+        }
+      ]
+    },
+    {
+      "name": "Requests (Contact)",
+      "item": [
+        {
+          "name": "Get All (Admin)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/requests" }
+        },
+        {
+          "name": "Get By ID (Admin)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/requests/1" }
+        },
+        {
+          "name": "Create Request (auth)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/requests",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Consulta sobre Toyota Corolla\",\n  \"message\": \"Me interesa el modelo 2024, ¿está disponible?\",\n  \"user_email\": \"test@ejemplo.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Request (Admin)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/requests/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"resolved\",\n  \"reply\": \"Sí, está disponible.\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Request (Admin)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/requests/1" }
+        }
+      ]
+    },
+    {
+      "name": "Sale Requests (Trade-in)",
+      "item": [
+        {
+          "name": "Get All (Admin)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/sale_requests" }
+        },
+        {
+          "name": "Get By ID (Admin)",
+          "request": { "method": "GET", "url": "{{baseUrl}}/sale_requests/1" }
+        },
+        {
+          "name": "Create Sale Request (auth)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sale_requests",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Honda\",\n  \"modelo\": \"Civic\",\n  \"anio\": 2020,\n  \"descripcion\": \"Vehículo en excelente estado\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Sale Request (Admin)",
+          "request": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/sale_requests/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"estado\": \"aprobado\",\n  \"respuesta_admin\": \"Aceptamos su vehículo.\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Sale Request (Admin)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/sale_requests/1" }
+        }
+      ]
+    },
+    {
+      "name": "Branches",
+      "item": [
+        {
+          "name": "Get All Branches",
+          "request": { "method": "GET", "url": "{{baseUrl}}/branches" }
+        },
+        {
+          "name": "Get Branch By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/branches/1" }
+        },
+        {
+          "name": "Create Branch (Admin)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/branches",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Sucursal Alajuela\",\n  \"address\": \"Centro de Alajuela\",\n  \"phone\": \"+506 2222-3333\"\n}" }
+          }
+        },
+        {
+          "name": "Update Branch (Admin)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/branches/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Sucursal Alajuela Centro\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Branch (Admin)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/branches/1" }
+        }
+      ]
+    },
+    {
+      "name": "Technical Glossary",
+      "item": [
+        {
+          "name": "Get All Terms",
+          "request": { "method": "GET", "url": "{{baseUrl}}/technical_glossary" }
+        },
+        {
+          "name": "Get Term By ID",
+          "request": { "method": "GET", "url": "{{baseUrl}}/technical_glossary/1" }
+        },
+        {
+          "name": "Create Term (Admin)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/technical_glossary",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"term\": \"ABS\",\n  \"definition\": \"Sistema de frenos antibloqueo\"\n}" }
+          }
+        },
+        {
+          "name": "Delete Term (Admin)",
+          "request": { "method": "DELETE", "url": "{{baseUrl}}/technical_glossary/1" }
+        }
+      ]
+    },
+    {
+      "name": "Settings",
+      "item": [
+        {
+          "name": "Get All Settings",
+          "request": { "method": "GET", "url": "{{baseUrl}}/settings" }
+        },
+        {
+          "name": "Get Setting By Key",
+          "request": { "method": "GET", "url": "{{baseUrl}}/settings/siteName" }
+        },
+        {
+          "name": "Create/Update Setting (Admin)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/settings",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"key\": \"siteName\",\n  \"value\": \"The Destiny Vault\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chatbot",
+      "item": [
+        {
+          "name": "Ask Chatbot",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/chatbot",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"¿Qué autos tienes disponibles en color blanco?\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

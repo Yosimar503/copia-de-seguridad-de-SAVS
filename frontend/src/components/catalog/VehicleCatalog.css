@@ -1,0 +1,54 @@
+/* ===== VEHICLE CATALOG SECTION - DARK LUXURY ===== */
+.vehicle-catalog-section {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.catalog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(234, 179, 8, 0.15);
+  padding-bottom: 1.25rem;
+  position: relative;
+}
+
+.catalog-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, #eab308 0%, transparent 100%);
+  border-radius: 2px;
+}
+
+.catalog-header .section-title {
+  margin-bottom: 0;
+  font-size: 2.25rem;
+  letter-spacing: -0.03em;
+}
+
+.results-text {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Bajamos a 280px para que no cause overflow en móviles normales */
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .catalog-header { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  .catalog-header .section-title { font-size: 1.8rem; }
+}
+
+@media (max-width: 480px) {
+  .catalog-grid {
+    grid-template-columns: 1fr; /* Una sola columna en móviles muy estrechos */
+  }
+}
