@@ -4,7 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class SaleRequest extends Model {
     static associate(models) {
-      // define association here
+      SaleRequest.belongsTo(models.Usuario, { foreignKey: 'userId', as: 'usuario' });
     }
   }
   SaleRequest.init({
@@ -18,7 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     imagen: DataTypes.TEXT('long'),
     estado: DataTypes.STRING,
     userId: DataTypes.STRING,
-    respuesta_admin: DataTypes.TEXT('long')
+    respuesta_admin: DataTypes.TEXT('long'),
+    vin: DataTypes.STRING,
+    placa: DataTypes.STRING,
+    tipo_vehiculo: DataTypes.STRING,
+    valor_estimado: DataTypes.DECIMAL(15, 2)
   }, {
     sequelize,
     modelName: 'SaleRequest',
