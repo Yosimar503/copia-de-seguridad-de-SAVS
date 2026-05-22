@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const saleRequestController = require('../controllers/saleRequestController');
+const { verificarToken } = require('../middlewares/authMiddleware');
 
-const { verificarToken, esAdmin, esAdminOGerente } = require('../middlewares/authMiddleware');
-
+router.get('/mine', verificarToken, saleRequestController.getMine);
 router.get('/', verificarToken, saleRequestController.getAll);
 router.get('/:id', verificarToken, saleRequestController.getById);
 router.post('/', verificarToken, saleRequestController.create);

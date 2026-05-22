@@ -9,7 +9,8 @@ import RedireccionContactos from '../components/Redirecciones/Redireccion Contac
 import RedireccionModeloAuto from '../components/Redirecciones/RedireccionModeloAuto/RedireccionModeloAuto/RedireccionModeloAuto';
 import CreditSimulator from '../components/CreditSimulator/CreditSimulator';
 import PerfilUsuarios from '../components/PerfilDeUsuarios/PerfilUsuarios';
-import IntercambioDeAutos from '../components/IntercambioDeAutos/IntercambioDeAutos';
+import VenderAutoPage from '../pages/VenderAuto/VenderAutoPage';
+import AgendarCita from '../pages/AgendarCita/AgendarCita';
 import Reseñas from '../components/TechnicalGlossary/ApartadoDeReseñas/Reseñas';
 import RecuperarPassword from '../pages/RecuperarPassword/RecuperarPassword';
 
@@ -42,7 +43,12 @@ const AppRoutes = () => {
       } />
       <Route path="/vender-auto" element={
         <ProtectedRoute allowedRoles={['cliente', 'admin', 'gerente']}>
-          <IntercambioDeAutos />
+          <VenderAutoPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/agendar-cita" element={
+        <ProtectedRoute allowedRoles={['cliente', 'admin', 'gerente']}>
+          <AgendarCita />
         </ProtectedRoute>
       } />
       <Route path="/reseñas" element={<Reseñas />} />

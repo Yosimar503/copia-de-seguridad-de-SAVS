@@ -53,6 +53,7 @@ const NavbarDiseño = () => {
               Calcular Financiamiento
             </button>
           </li>
+          <li><Link to="/agendar-cita" className={current === '/agendar-cita' ? 'active' : ''}>Agendar cita</Link></li>
           <li><Link to="/contact" className={current === '/contact' ? 'active' : ''}>Contacto</Link></li>
           <li><Link to="/reseñas" className={current === '/reseñas' ? 'active' : ''}>Reseñas</Link></li>
           {(user?.rol === 'admin' || user?.rol === 'gerente') && (
@@ -121,6 +122,7 @@ const NavbarDiseño = () => {
                 Calcular Financiamiento
               </button>
             </li>
+            <li onClick={closeMenu}><Link to="/agendar-cita" className={current === '/agendar-cita' ? 'active' : ''}>Agendar cita</Link></li>
             <li onClick={closeMenu}><Link to="/contact" className={current === '/contact' ? 'active' : ''}>Contacto</Link></li>
             <li onClick={closeMenu}><Link to="/reseñas" className={current === '/reseñas' ? 'active' : ''}>Reseñas</Link></li>
           {(user?.rol === 'admin' || user?.rol === 'gerente') && (

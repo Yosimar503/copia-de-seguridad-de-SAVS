@@ -4,6 +4,7 @@ const requestController = require('../controllers/requestController');
 
 const { verificarToken, esAdmin, esAdminOGerente } = require('../middlewares/authMiddleware');
 
+router.get('/mine', verificarToken, requestController.getMine);
 router.get('/', verificarToken, esAdminOGerente, requestController.getAll);
 router.get('/:id', verificarToken, esAdminOGerente, requestController.getById);
 router.post('/', verificarToken, requestController.create); 

@@ -17,6 +17,23 @@ exports.getAll = async (req, res) => {
     }
 };
 
+exports.getMine = async (req, res) => {
+    try {
+        const email = (req.usuario.email || req.usuario.correo || '').toLowerCase();
+        const { sequelize } = require('../models');
+        const data = await Request.findAll({
+            where: sequelize.where(
+                sequelize.fn('LOWER', sequelize.col('user_email')),
+                email
+            ),
+            order: [['createdAt', 'DESC']]
+        });
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 /**
  * Obtiene los detalles de una solicitud en específico buscando por su ID.
  */

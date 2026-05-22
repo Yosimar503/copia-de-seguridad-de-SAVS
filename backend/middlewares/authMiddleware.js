@@ -3,7 +3,9 @@ const { Usuario, Rol } = require('../models');
 
 // Middleware para verificar si el usuario está autenticado (JWT en cookies)
 exports.verificarToken = async (req, res, next) => {
-    const token = req.cookies.token;
+    const authHeader = req.headers.authorization || '';
+    const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    const token = bearerToken || req.cookies.token;
 
     if (!token) {
         return res.status(401).json({ error: 'Acceso denegado. No se proporcionó un token.' });
