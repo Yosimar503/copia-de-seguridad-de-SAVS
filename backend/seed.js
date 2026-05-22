@@ -1,8 +1,16 @@
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const { Rol, Usuario, Auto, Review, Request, SaleRequest, Branch, TechnicalGlossary, Setting } = require('./models');
+
+async function hashPasswordIfNeeded(plain) {
+  if (!plain) return plain;
+  if (typeof plain === 'string' && plain.startsWith('$2')) return plain;
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(plain, salt);
+}
 
 const seedData = async () => {
     try {
@@ -22,20 +30,25 @@ const seedData = async () => {
         // 2. Migrar Usuarios
         if (data.users) {
             for (const u of data.users) {
-                await Usuario.findOrCreate({
+                const email = (u.email || u.correo || '').toLowerCase().trim();
+                const hashedPassword = await hashPasswordIfNeeded(u.password);
+                const [usuario, created] = await Usuario.findOrCreate({
                     where: { id: u.id.toString() },
                     defaults: {
                         nombre: u.nombre,
-                        email: u.email || u.correo,
-                        password: u.password,
+                        email,
+                        password: hashedPassword,
                         rolId: rolesMap[u.rol] || rolesMap['Cliente'],
                         favorites: u.favorites || [],
                         telefono: u.telefono,
                         ubicacion: u.ubicacion,
                         direccion_precisa: u.direccion_precisa,
-                        correo: u.correo
+                        correo: email
                     }
                 });
+                if (!created && usuario.password && !String(usuario.password).startsWith('$2')) {
+                    await usuario.update({ password: hashedPassword, email, correo: email });
+                }
             }
             console.log(`Migrados ${data.users.length} usuarios.`);
         }

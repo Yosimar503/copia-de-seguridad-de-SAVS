@@ -105,6 +105,7 @@ export const authService = {
   }
 };
 
+export { apiForm };
 export default api;
 
 /**

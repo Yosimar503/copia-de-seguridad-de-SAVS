@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Swal from 'sweetalert2';
-import api from '../../services/api';
 import AdminLoader from '../../components/admin/AdminLoader';
+import { useDashboardStats } from '../../admin/hooks/useDashboardStats';
+import { getStoredAdminUser } from '../../admin/utils/auth';
 import { 
   ShieldCheck, 
   Car, 
@@ -36,34 +37,17 @@ import './Admin.css';
 const COLORS = ['#eab308', '#3b82f6', '#10b981', '#ef4444', '#a855f7', '#6366f1'];
 
 const AdminDashboard = () => {
-  const getUserFromStorage = () => {
-    try {
-      const stored = localStorage.getItem('user');
-      if (!stored || stored === 'undefined') return {};
-      return JSON.parse(stored);
-    } catch (e) {
-      return {};
-    }
-  };
-  
-  const user = getUserFromStorage();
-  const [stats, setStats] = useState({
-    vehicles: 0,
-    users: 0,
-    requests: 0,
-    reviews: 0,
-    tradeIn: 0
-  });
-  const [dataSets, setDataSets] = useState({
-    fuelData: [],
-    transData: [],
-    yearData: [],
-    reqData: [],
-    tradeInData: []
-  });
-  const [tradeInList, setTradeInList] = useState([]);
-  const [vehicleList, setVehicleList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const user = getStoredAdminUser();
+  const {
+    stats,
+    dataSets,
+    tradeInList,
+    vehicleList,
+    loading,
+    refetch,
+    deleteVehicle: removeVehicle,
+    updateTradeInStatus: patchTradeIn,
+  } = useDashboardStats();
 
   const deleteVehicle = async (id, name) => {
     const result = await Swal.fire({
@@ -81,9 +65,7 @@ const AdminDashboard = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await api.delete(`/vehicles/${id}`);
-        setVehicleList(prev => prev.filter(v => v.id !== id));
-        fetchStats(); // Update counters and charts
+        await removeVehicle(id);
         Swal.fire({
           title: '¡Eliminado!',
           icon: 'success',
@@ -100,15 +82,7 @@ const AdminDashboard = () => {
 
   const updateTradeInStatus = async (id, newStatus, message = '') => {
     try {
-      const res = await api.patch(`/sale_requests/${id}`, { 
-        estado: newStatus,
-        respuesta_admin: message 
-      });
-      
-      setTradeInList(prev => prev.map(item => item.id === id ? { ...item, estado: newStatus, respuesta_admin: message } : item));
-      // Actualizar el gráfico
-      fetchStats(); 
-      
+      await patchTradeIn(id, newStatus, message);
       Swal.fire({
         icon: 'success',
         title: 'Sistema Actualizado',
@@ -123,111 +97,12 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchStats = async () => {
-      setLoading(true);
-      try {
-        // Usamos la instancia 'api' que ya tiene el baseURL: http://localhost:5000/api
-        const [vRes, uRes, reqRes, revRes, sreqRes, setsRes] = await Promise.allSettled([
-          api.get('/vehicles'),
-          api.get('/users'),
-          api.get('/requests'),
-          api.get('/reviews'),
-          api.get('/sale_requests'),
-          api.get('/settings').catch(() => ({ data: {} }))
-        ]);
-        
-        // Extraemos los datos de forma segura
-        // Nota: Los vehículos vienen paginados { data: [...], pagination: {...} }
-        const vRaw = vRes.status === 'fulfilled' ? vRes.value.data : [];
-        const v = Array.isArray(vRaw) ? vRaw : (vRaw.data || []);
-        
-        const u = uRes.status === 'fulfilled' ? uRes.value.data : [];
-        const req = reqRes.status === 'fulfilled' ? reqRes.value.data : [];
-        const rev = revRes.status === 'fulfilled' ? revRes.value.data : [];
-        const sreq = sreqRes.status === 'fulfilled' ? sreqRes.value.data : [];
-        const sets = setsRes.status === 'fulfilled' ? setsRes.value.data : {};
-
-        setStats({
-          vehicles: vRaw.pagination?.total || (Array.isArray(v) ? v.length : 0),
-          users: Array.isArray(u) ? u.length : 0,
-          requests: Array.isArray(req) ? req.length : 0,
-          reviews: Array.isArray(rev) ? rev.length : 0,
-          tradeIn: Array.isArray(sreq) ? sreq.length : 0,
-          serverStatus: sets?.server_status || { is_online: true, status_text: 'SISTEMA ACTIVO' }
-        });
-
-        // Procesar datos para gráficas (con protecciones contra datos nulos/vacíos)
-        const safeV = Array.isArray(v) ? v : [];
-        const safeReq = Array.isArray(req) ? req : [];
-        const safeSreq = Array.isArray(sreq) ? sreq : [];
-        
-        // 1. Combustible
-        const fuelMap = safeV.reduce((acc, curr) => {
-          const type = curr.fuel || 'No especificado';
-          acc[type] = (acc[type] || 0) + 1;
-          return acc;
-        }, {});
-        const fuelData = Object.keys(fuelMap).map(name => ({ name, value: fuelMap[name] }));
-
-        // 2. Transmisión
-        const transMap = safeV.reduce((acc, curr) => {
-          const type = curr.transmission || 'No especificado';
-          acc[type] = (acc[type] || 0) + 1;
-          return acc;
-        }, {});
-        const transData = Object.keys(transMap).map(name => ({ name, value: transMap[name] }));
-
-        // 3. Vehículos por Año
-        const yearMap = safeV.reduce((acc, curr) => {
-          const year = curr.year || curr.anio || 'N/D';
-          acc[year] = (acc[year] || 0) + 1;
-          return acc;
-        }, {});
-        const yearData = Object.keys(yearMap).sort().map(year => ({ year, cantidad: yearMap[year] }));
-
-        // 4. Solicitudes por Estado
-        const reqMap = safeReq.reduce((acc, curr) => {
-          const statusMap = {
-             'pending': 'Pendiente',
-             'accepted': 'Aprobada',
-             'rejected': 'Rechazada',
-             'replied': 'Respondida'
-          };
-          const status = statusMap[curr.status] || curr.status || 'Pendiente';
-          acc[status] = (acc[status] || 0) + 1;
-          return acc;
-        }, {});
-        const reqData = Object.keys(reqMap).map(name => ({ name, value: reqMap[name] }));
-
-        // 5. Trade-in por Estado
-        const tradeInMap = safeSreq.reduce((acc, curr) => {
-          const status = curr.estado || 'En revisión';
-          acc[status] = (acc[status] || 0) + 1;
-          return acc;
-        }, {});
-        const tradeInData = Object.keys(tradeInMap).map(name => ({ name, value: tradeInMap[name] }));
-
-        setDataSets({ fuelData, transData, yearData, reqData, tradeInData });
-
-        // Guardar lista completa para gestión
-        setTradeInList(safeSreq.sort((a, b) => (b.id - a.id)));
-        setVehicleList(safeV.slice().sort((a, b) => (b.id - a.id)));
-
-      } catch (error) {
-        console.error("Error fetching dashboard stats:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
   useEffect(() => {
-    fetchStats();
-    
-    // Polling cada 30 segundos para actualización en "tiempo real"
-    const interval = setInterval(fetchStats, 30000);
+    refetch();
+    const interval = setInterval(refetch, 30000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [refetch]);
 
   if (loading && stats.vehicles === 0) {
     return <AdminLoader message="Sincronizando con el servidor central..." />;

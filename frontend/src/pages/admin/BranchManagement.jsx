@@ -12,7 +12,7 @@ import {
   X,
   ExternalLink
 } from 'lucide-react';
-import api from '../../services/api';
+import { branchesService } from '../../admin/services';
 import AdminLoader from '../../components/admin/AdminLoader';
 import './Admin.css';
 
@@ -44,8 +44,8 @@ const BranchManagement = () => {
   const fetchBranches = async () => {
     setIsLoading(true);
     try {
-      const response = await api.get('/branches');
-      setBranches(response.data);
+      const data = await branchesService.getAll();
+      setBranches(data);
     } catch (error) {
       console.error("Error fetching branches:", error);
     } finally {
@@ -90,13 +90,11 @@ const BranchManagement = () => {
     }
 
     try {
-      const url = isEditing 
-        ? `/branches/${currentBranch.id}` 
-        : '/branches';
-      
-      const res = isEditing 
-        ? await api.put(url, currentBranch)
-        : await api.post(url, currentBranch);
+      if (isEditing) {
+        await branchesService.update(currentBranch.id, currentBranch);
+      } else {
+        await branchesService.create(currentBranch);
+      }
 
       Swal.fire({
         ...darkSwal,
@@ -125,7 +123,7 @@ const BranchManagement = () => {
 
     if (result.isConfirmed) {
       try {
-        await api.delete(`/branches/${id}`);
+        await branchesService.remove(id);
         Swal.fire({ ...darkSwal, icon: 'success', title: 'Eliminado', timer: 1000, showConfirmButton: false });
         fetchBranches();
       } catch (error) {

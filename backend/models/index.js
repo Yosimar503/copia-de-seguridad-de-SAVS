@@ -5,8 +5,38 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
+require('dotenv').config();
+
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+
+/** @type {import('sequelize').Options & { database?: string; username?: string; password?: string }} */
+let config;
+try {
+  config = require(__dirname + '/../config/config.json')[env];
+} catch {
+  config = null;
+}
+
+if (!config) {
+  config = {
+    username: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD ?? process.env.DB_PASS ?? '',
+    database: process.env.DB_NAME || 'the_destiny_vault',
+    host: process.env.DB_HOST || '127.0.0.1',
+    port: Number(process.env.DB_PORT) || 3306,
+    dialect: 'mysql',
+    logging: false,
+  };
+} else if (env === 'development' || env === 'test') {
+  config = {
+    ...config,
+    username: process.env.DB_USER || config.username,
+    password: process.env.DB_PASSWORD ?? process.env.DB_PASS ?? config.password ?? '',
+    database: process.env.DB_NAME || config.database,
+    host: process.env.DB_HOST || config.host,
+    port: Number(process.env.DB_PORT) || config.port || 3306,
+  };
+}
 const db = {};
 
 let sequelize;
