@@ -143,6 +143,7 @@ export const marketingService = {
   getBanners: () => api.get('/marketing/banners').then((r) => r.data),
 };
 
+export { apiForm };
 export default api;
 
 /**

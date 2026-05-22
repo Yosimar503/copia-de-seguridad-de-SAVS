@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { vehicleService } from '../../services/api'; // Tarea 2: Usar servicio centralizado
+import { adminVehiclesService } from '../../admin/services';
 import { 
   CarFront, 
   Plus, 
@@ -50,7 +50,7 @@ const CreateVehicle = () => {
     setLoading(true);
     try {
       // Tarea 2: Obtener datos reales con paginación (traemos los primeros 100 para el admin)
-      const response = await vehicleService.getAll({ limit: 100 });
+      const response = await adminVehiclesService.getAll({ limit: 100 });
       setVehiculos(response.data || []);
     } catch (error) {
       console.error("Error fetching vehicles:", error);
@@ -92,7 +92,7 @@ const CreateVehicle = () => {
 
     if (result.isConfirmed) {
       try {
-        await vehicleService.delete(vehicle.id);
+        await adminVehiclesService.delete(vehicle.id);
         setVehiculos(prev => prev.filter(v => v.id !== vehicle.id));
         Swal.fire({
           icon: 'success',
@@ -141,10 +141,10 @@ const CreateVehicle = () => {
 
       let response;
       if (isEditing) {
-        response = await vehicleService.update(data.id, formData);
+        response = await adminVehiclesService.update(data.id, formData);
         Swal.fire({ icon: 'success', title: '¡Actualizado!', background: '#141414', color: '#fff', timer: 1500, showConfirmButton: false });
       } else {
-        response = await vehicleService.create(formData);
+        response = await adminVehiclesService.create(formData);
         Swal.fire({ icon: 'success', title: '¡Publicado!', background: '#141414', color: '#fff', timer: 1500, showConfirmButton: false });
       }
 

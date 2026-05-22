@@ -1,0 +1,45 @@
+/* ===== ADMIN BREADCRUMBS ===== */
+.admin-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.6rem 0 1.5rem;
+  font-size: 0.82rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-home {
+  display: flex;
+  align-items: center;
+  color: var(--admin-text-muted);
+  transition: color 0.2s ease;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.breadcrumb-home:hover {
+  color: var(--admin-accent);
+}
+
+.breadcrumb-sep {
+  color: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.breadcrumb-link {
+  color: var(--admin-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.breadcrumb-link:hover {
+  color: #fff;
+}
+
+.breadcrumb-current {
+  color: var(--admin-accent);
+  font-weight: 600;
+  padding: 2px 4px;
+}

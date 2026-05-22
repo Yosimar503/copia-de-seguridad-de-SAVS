@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Search, Bell, User, Calculator, LogOut, Menu, X } from 'lucide-react';
 import savsLogo from '../../img/imagecopy4.png';
 import { useNavbarStatus } from '../../hooks/useNavbar';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation, NavLink, Link } from 'react-router-dom';
 import VehicleSelectionModal from '../VehicleSelection/VehicleSelectionModal';
 import ShimmerText from '../ShimmerText/ShimmerText';
 import './Navbar.css';
 
 const NavbarDiseño = () => {
   const [isVehicleModalOpen, setIsVehicleModalOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const { 
     user, 
     isLoggedIn, 
@@ -24,6 +26,19 @@ const NavbarDiseño = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const current = location.pathname;
+
+  // Cerrar dropdown al hacer clic fuera del componente
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isDropdownOpen]);
 
   return (
     <>
@@ -42,9 +57,9 @@ const NavbarDiseño = () => {
 
         {/* Navigation Links */}
         <ul className="navbar-links">
-          <li><Link to="/" className={current === '/' ? 'active' : ''}>Inicio</Link></li>
-          <li><Link to="/inventory" className={current === '/inventory' ? 'active' : ''}>Vehículos</Link></li>
-          <li><Link to="/vender-auto" className={current === '/vender-auto' ? 'active' : ''}>Trade In</Link></li>
+          <li><NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>Inicio</NavLink></li>
+          <li><NavLink to="/inventory" className={({ isActive }) => isActive ? 'active' : ''}>Vehículos</NavLink></li>
+          <li><NavLink to="/vender-auto" className={({ isActive }) => isActive ? 'active' : ''}>Trade In</NavLink></li>
           <li>
             <button 
               onClick={() => setIsVehicleModalOpen(true)}
@@ -53,11 +68,11 @@ const NavbarDiseño = () => {
               Calcular Financiamiento
             </button>
           </li>
-          <li><Link to="/agendar-cita" className={current === '/agendar-cita' ? 'active' : ''}>Agendar cita</Link></li>
-          <li><Link to="/contact" className={current === '/contact' ? 'active' : ''}>Contacto</Link></li>
-          <li><Link to="/reseñas" className={current === '/reseñas' ? 'active' : ''}>Reseñas</Link></li>
+          <li><NavLink to="/agendar-cita" className={({ isActive }) => isActive ? 'active' : ''}>Agendar cita</NavLink></li>
+          <li><NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contacto</NavLink></li>
+          <li><NavLink to="/reseñas" className={({ isActive }) => isActive ? 'active' : ''}>Reseñas</NavLink></li>
           {(user?.rol === 'admin' || user?.rol === 'gerente') && (
-            <li><Link to="/admin" className={current.startsWith('/admin') ? 'active' : ''} style={{ color: '#eab308' }}>Gestión SAVS</Link></li>
+            <li><NavLink to="/admin" className={({ isActive }) => isActive ? 'active' : ''} style={{ color: '#eab308' }}>Gestión SAVS</NavLink></li>
           )}
         </ul>
 
@@ -76,24 +91,61 @@ const NavbarDiseño = () => {
             />
           </div>
           
-          <div 
-            className={`session-manager ${isLoggedIn ? 'logged-in' : ''}`}
-            onClick={handleUserClick}
-          >
-            <div className="avatar-wrapper">
-              <User size={20} />
+          <div
+            ref={dropdownRef}
+            className={`user-dropdown-container ${isDropdownOpen ? 'open' : ''}`}>
+            <div 
+              className={`session-manager ${isLoggedIn ? 'logged-in' : ''}`}
+              onClick={() => {
+                if (isLoggedIn) {
+                  setIsDropdownOpen(!isDropdownOpen);
+                } else {
+                  handleUserClick();
+                }
+              }}
+              onMouseEnter={() => { if (isLoggedIn) setIsDropdownOpen(true); }}
+            >
+              <div className="avatar-wrapper">
+                <User size={20} />
+              </div>
+              <span className="session-label">
+                {isLoggedIn ? `Hola, ${user.nombre.split(' ')[0]}` : 'Iniciar Sesión'}
+              </span>
+              {isLoggedIn && (
+                <svg className="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              )}
             </div>
-            <span className="session-label">
-              {isLoggedIn ? `Perfil: ${user.nombre}` : 'Iniciar Sesión'}
-            </span>
+
+            {/* Dropdown Menu for Authenticated Users */}
             {isLoggedIn && (
-              <button 
-                className="logout-button" 
-                onClick={handleLogout}
-                title="Cerrar Sesión"
-              >
-                <LogOut size={18} />
-              </button>
+              <div className={`user-dropdown-menu ${isDropdownOpen ? 'open' : ''}`}>
+                <div style={{ padding: '0.5rem 1.25rem', marginBottom: '0.5rem' }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: '#a1a1aa' }}>Conectado como</p>
+                  <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 'bold', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.email}</p>
+                </div>
+                <div className="dropdown-divider"></div>
+                <Link to="/perfil" className="dropdown-item" onClick={() => setIsDropdownOpen(false)}>
+                  <User size={16} /> Mi Perfil
+                </Link>
+                <Link to="/vender-auto" className="dropdown-item" onClick={() => setIsDropdownOpen(false)}>
+                  <Calculator size={16} /> Mis Vehículos
+                </Link>
+                {(user?.rol === 'admin' || user?.rol === 'gerente') && (
+                  <Link to="/admin" className="dropdown-item" onClick={() => setIsDropdownOpen(false)} style={{ color: '#eab308' }}>
+                    <Search size={16} /> Panel de Administración
+                  </Link>
+                )}
+                <div className="dropdown-divider"></div>
+                <button 
+                  className="dropdown-item" 
+                  onClick={(e) => { setIsDropdownOpen(false); handleLogout(e); }}
+                  style={{ color: '#ef4444' }}
+                >
+                  <LogOut size={16} /> Cerrar Sesión
+                </button>
+              </div>
             )}
           </div>
 
@@ -108,9 +160,9 @@ const NavbarDiseño = () => {
       <div className={`mobile-menu-drawer ${isMenuOpen ? 'open' : ''}`}>
         <div className="mobile-menu-content">
           <ul className="mobile-links">
-            <li onClick={closeMenu}><Link to="/" className={current === '/' ? 'active' : ''}>Inicio</Link></li>
-            <li onClick={closeMenu}><Link to="/inventory" className={current === '/inventory' ? 'active' : ''}>Vehículos</Link></li>
-            <li onClick={closeMenu}><Link to="/vender-auto" className={current === '/vender-auto' ? 'active' : ''}>Trade In</Link></li>
+            <li onClick={closeMenu}><NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>Inicio</NavLink></li>
+            <li onClick={closeMenu}><NavLink to="/inventory" className={({ isActive }) => isActive ? 'active' : ''}>Vehículos</NavLink></li>
+            <li onClick={closeMenu}><NavLink to="/vender-auto" className={({ isActive }) => isActive ? 'active' : ''}>Trade In</NavLink></li>
             <li>
               <button 
                 onClick={() => {
@@ -122,11 +174,11 @@ const NavbarDiseño = () => {
                 Calcular Financiamiento
               </button>
             </li>
-            <li onClick={closeMenu}><Link to="/agendar-cita" className={current === '/agendar-cita' ? 'active' : ''}>Agendar cita</Link></li>
-            <li onClick={closeMenu}><Link to="/contact" className={current === '/contact' ? 'active' : ''}>Contacto</Link></li>
-            <li onClick={closeMenu}><Link to="/reseñas" className={current === '/reseñas' ? 'active' : ''}>Reseñas</Link></li>
+            <li onClick={closeMenu}><NavLink to="/agendar-cita" className={({ isActive }) => isActive ? 'active' : ''}>Agendar cita</NavLink></li>
+            <li onClick={closeMenu}><NavLink to="/contact" className={({ isActive }) => isActive ? 'active' : ''}>Contacto</NavLink></li>
+            <li onClick={closeMenu}><NavLink to="/reseñas" className={({ isActive }) => isActive ? 'active' : ''}>Reseñas</NavLink></li>
           {(user?.rol === 'admin' || user?.rol === 'gerente') && (
-            <li onClick={closeMenu}><Link to="/admin" className={current.startsWith('/admin') ? 'active' : ''} style={{ color: '#eab308' }}>Gestión SAVS</Link></li>
+            <li onClick={closeMenu}><NavLink to="/admin" className={({ isActive }) => isActive ? 'active' : ''} style={{ color: '#eab308' }}>Gestión SAVS</NavLink></li>
           )}
           </ul>
           

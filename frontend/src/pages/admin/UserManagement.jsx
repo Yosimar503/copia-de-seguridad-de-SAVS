@@ -13,7 +13,8 @@ import {
   Shield
 } from 'lucide-react';
 import Swal from 'sweetalert2';
-import api from '../../services/api';
+import { usersService } from '../../admin/services';
+import { getStoredAdminUser } from '../../admin/utils/auth';
 import AdminLoader from '../../components/admin/AdminLoader';
 import './UserManagement.css';
 
@@ -22,24 +23,14 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
   
-  const getUserFromStorage = () => {
-    try {
-      const stored = localStorage.getItem('user');
-      if (!stored || stored === 'undefined') return {};
-      return JSON.parse(stored);
-    } catch (e) {
-      return {};
-    }
-  };
-  
-  const currentUser = getUserFromStorage();
+  const currentUser = getStoredAdminUser();
   const isGerente = currentUser.rol === 'gerente';
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await api.get('/users');
-      setUsers(res.data);
+      const data = await usersService.getAll();
+      setUsers(data);
     } catch (error) {
       console.error("Error loading users:", error);
     } finally {
@@ -82,11 +73,9 @@ const UserManagement = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await api.put(`/users/${user.id}`, result.value);
-          if (res.status === 200) {
-            Swal.fire('Actualizado', 'El usuario ha sido modificado con éxito.', 'success');
-            fetchUsers();
-          }
+          await usersService.update(user.id, result.value);
+          Swal.fire('Actualizado', 'El usuario ha sido modificado con éxito.', 'success');
+          fetchUsers();
         } catch (error) {
           Swal.fire('Error', 'No se pudo actualizar el usuario.', 'error');
         }
@@ -116,7 +105,7 @@ const UserManagement = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await api.delete(`/users/${user.id}`);
+          await usersService.remove(user.id);
           Swal.fire('Eliminado', 'El usuario ha sido removido.', 'success');
           fetchUsers();
         } catch (error) {
@@ -152,7 +141,7 @@ const UserManagement = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await api.put(`/users/${user.id}`, { rolId: newRolId, rol: newRole });
+          await usersService.update(user.id, { rolId: newRolId, rol: newRole });
           Swal.fire({
             title: isPromoting ? '¡Promovido!' : 'Actualizado',
             text: isPromoting ? `${user.nombre} ahora es parte del equipo administrativo.` : 'Permisos actualizados correctamente.',
